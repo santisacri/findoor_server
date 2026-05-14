@@ -6,8 +6,6 @@ export class AppRouter {
         const router = Router()
 
 
-
-
         return router
     }
 }
