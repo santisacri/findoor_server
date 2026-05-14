@@ -14,9 +14,6 @@ interface UserEntityProps {
     email: string,
     role: Role,
     createdAt: Date,
-    properties?: PropertyEntity[],
-    favorites?: FavoriteEntity[],
-    contactLeads?: ContactLeadEntity[],
     phone?: string,
 }
 

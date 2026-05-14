@@ -35,10 +35,6 @@ interface PropertyEntityProps {
     parkingSpots: number
     createdAt: Date
     updatedAt: Date
-    owner?: UserEntity
-    address?: AddressEntity
-    favorites?: FavoriteEntity[]
-    contactLeads?: ContactLeadEntity[]
 }
 
 export class PropertyEntity {
