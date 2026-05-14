@@ -1,6 +1,6 @@
 import { Server } from "./server"
 import { envs } from "./env.schema"
-import { AppRouter } from "./router"
+import { AppRouter } from "./presentation/app.router"
 
 
 (() => {

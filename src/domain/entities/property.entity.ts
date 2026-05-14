@@ -1,7 +1,4 @@
-import { AddressEntity } from "./address.entity"
-import { ContactLeadEntity } from "./contact-lead.entity"
-import { FavoriteEntity } from "./favorite.entity"
-import { UserEntity } from "./user.entity"
+import { CustomError } from "../errors/custom-errors"
 
 enum OperationType {
     SALE,
@@ -45,6 +42,12 @@ export class PropertyEntity {
 
 
     static fromObject(props: PropertyEntityProps) {
+        const { id, ownerId, addressId } = props
+
+        if (!id) throw CustomError.badRequest('Missing id')
+        if (!ownerId) throw CustomError.badRequest('Missing ownerId')
+        if (!addressId) throw CustomError.badRequest('Missing addressId')
+
         return new PropertyEntity(props)
     }
 }

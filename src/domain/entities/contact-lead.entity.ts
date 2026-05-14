@@ -1,3 +1,4 @@
+import { CustomError } from "../errors/custom-errors"
 
 
 interface ContactLeadEntityProps {
@@ -16,6 +17,15 @@ export class ContactLeadEntity {
 
 
     static fromObject(props: ContactLeadEntityProps) {
+        const { createdAt, id, isRead, message, propertyId, senderId } = props
+
+        if (!id) throw CustomError.badRequest('Missing id')
+        if (!propertyId) throw CustomError.badRequest('Missing propertyId')
+        if (!senderId) throw CustomError.badRequest('Missing senderId')
+        if (!message) throw CustomError.badRequest('Missing message')
+        if (!isRead) throw CustomError.badRequest('Missing isRead')
+        if (!createdAt) throw CustomError.badRequest('Missing createdAt')
+
         return new ContactLeadEntity(props)
     }
 }

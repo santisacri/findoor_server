@@ -1,6 +1,3 @@
-import { ContactLeadEntity } from "./contact-lead.entity";
-import { FavoriteEntity } from "./favorite.entity";
-import { PropertyEntity } from "./property.entity";
 
 
 export enum Role {

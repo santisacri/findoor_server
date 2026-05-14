@@ -1,3 +1,4 @@
+import { CustomError } from "../errors/custom-errors"
 
 
 interface FavoriteEntityProps {
@@ -14,6 +15,13 @@ export class FavoriteEntity {
 
 
     static fromObject(props: FavoriteEntityProps) {
+        const { createdAt, id, propertyId, userId } = props
+
+        if (!id) throw CustomError.badRequest('Missing id')
+        if (!createdAt) throw CustomError.badRequest('Missing createdAt')
+        if (!propertyId) throw CustomError.badRequest('Missing propertyId')
+        if (!userId) throw CustomError.badRequest('Missing userId')
+
         return new FavoriteEntity(props)
     }
 }
