@@ -11,3 +11,98 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  SEEKER
+  OWNER
+}
+
+enum OperationType {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+}
+
+model User {
+  id           String        @id @default(uuid(7))
+  name         String
+  email        String
+  role         Role          @default(SEEKER)
+  phone        String?
+  created_at   DateTime
+  properties   Property[]
+  favorites    Favorite[]
+  contactLeads ContactLead[]
+
+  @@map("users")
+}
+
+model Property {
+  id            String        @id @default(uuid(7))
+  ownerId       String        @map("owner_id")
+  addressId     String
+  operationType OperationType @map("operation_type")
+  propertyType  PropertyType  @map("property_type")
+  title         String
+  description   String
+  price         Int
+  currency      String
+  totalAreaM2   Int           @map("total_area_m2")
+  coveredAreaM2 Int?          @map("covered_area_m2")
+  bedrooms      Int
+  bathrooms     Int
+  parkingSpots  Int           @map("parking_spots")
+  isActive      Boolean       @default(true) @map("is_active")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  owner         User          @relation(fields: [ownerId], references: [id])
+  address       Address?
+  favorites     Favorite[]
+  contactLeads  ContactLead[]
+
+  @@map("properties")
+}
+
+model Address {
+  id           String   @id @default(uuid(7))
+  propertyId   String   @unique @map("property_id")
+  province     String
+  city         String
+  neighborhood String?
+  street       String?
+  streetNumber String?  @map("street_number")
+  lat          Float?
+  lng          Float?
+  property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("addresses")
+}
+
+model Favorite {
+  id         String   @id @default(uuid(7))
+  userId     String   @map("user_id")
+  propertyId String   @map("property_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
+  @@map("favorites")
+}
+
+model ContactLead {
+  id         String   @id @default(uuid(7))
+  propertyId String   @map("property_id")
+  senderId   String   @map("sender_id")
+  message    String
+  isRead     Boolean  @default(false) @map("is_read")
+  createdAt  DateTime @default(now()) @map("created_at")
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("contact_leads")
+}
