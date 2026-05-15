@@ -3,6 +3,7 @@ import { IUserDatasource } from "../../domain/contracts/datasources/user.datasou
 import { Role, UserEntity } from "../../domain/entities/user.entity";
 import { TRegisterUser } from "../../presentation/auth/auth.schemas";
 import { Role as PrismaRole } from "../../../generated/prisma/client";
+import { CustomError } from "../../domain/errors/custom-errors";
 
 type TPrismaUser = {
     name: string;
@@ -21,20 +22,25 @@ export class UserDatasource implements IUserDatasource {
     ) { }
 
     toEntity(prismaUser: TPrismaUser): UserEntity {
-        const {role, created_at, ...user} = prismaUser
+        const { role, created_at, ...user } = prismaUser
         return UserEntity.fromObject({
-            ...user, 
-            createdAt: created_at, 
+            ...user,
+            createdAt: created_at,
             role: role as unknown as Role
         })
     }
 
     async createUser(user: TRegisterUser): Promise<UserEntity> {
-        const newUser = await this.prisma.user.create({
-            data: user
-        })
+        try {
+            const newUser = await this.prisma.user.create({
+                data: user
+            })
 
-        return this.toEntity(newUser)
+            return this.toEntity(newUser)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+
     }
 
 }
