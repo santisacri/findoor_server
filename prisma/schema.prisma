@@ -31,9 +31,10 @@ model User {
   id           String        @id @default(uuid(7))
   name         String
   email        String
+  password     String
   role         Role          @default(SEEKER)
-  phone        String?
-  created_at   DateTime
+  phone        Int?
+  created_at   DateTime      @default(now())
   properties   Property[]
   favorites    Favorite[]
   contactLeads ContactLead[]
