@@ -28,16 +28,17 @@ enum PropertyType {
 }
 
 model User {
-  id           String        @id @default(uuid(7))
-  name         String
-  email        String        @unique()
-  password     String
-  role         Role          @default(SEEKER)
-  phone        Int?
-  created_at   DateTime      @default(now())
-  properties   Property[]
-  favorites    Favorite[]
-  contactLeads ContactLead[]
+  id            String         @id @default(uuid(7))
+  name          String
+  email         String         @unique()
+  password      String
+  role          Role           @default(SEEKER)
+  phone         Int?
+  created_at    DateTime       @default(now())
+  properties    Property[]
+  favorites     Favorite[]
+  contactLeads  ContactLead[]
+  refreshTokens RefreshToken[]
 
   @@map("users")
 }
@@ -106,4 +107,15 @@ model ContactLead {
   sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@map("contact_leads")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid(7))
+  token     String    @unique // hash del token, nunca plain text
+  userId    String
+  family    String // para invalidar toda la familia en reuse attack
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
 }
