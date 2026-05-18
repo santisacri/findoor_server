@@ -111,11 +111,13 @@ model ContactLead {
 
 model RefreshToken {
   id        String    @id @default(uuid(7))
-  token     String    @unique // hash del token, nunca plain text
+  token     String    @unique 
   userId    String
-  family    String // para invalidar toda la familia en reuse attack
+  family    String 
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime  @default(now())
   user      User      @relation(fields: [userId], references: [id])
+
+  @@map("refresh_token")
 }
