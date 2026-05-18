@@ -111,9 +111,9 @@ model ContactLead {
 
 model RefreshToken {
   id        String    @id @default(uuid(7))
-  token     String    @unique 
+  token     String    @unique @default(uuid(7))
   userId    String
-  family    String 
+  family    String    @default(uuid(7))
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime  @default(now())
