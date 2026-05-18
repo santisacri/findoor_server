@@ -4,19 +4,19 @@ import { IUserEntityProps } from "../../../domain/entities/user.entity";
 import { TRegisterUser } from "../../../presentation/auth/auth.schemas";
 
 export interface IRegisterUserUseCase {
-    execute(user: TRegisterUser): Promise<Omit<IUserEntityProps, 'password'>>
+    execute(user: TRegisterUser): Promise<{user: Omit<IUserEntityProps, 'password'>}>
 }
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
 
     constructor(
         private readonly userRepository: IUserRepository,
-        private readonly hashService: IHashService
+        private readonly hashService: IHashService,
     ) { }
 
-    async execute(user: TRegisterUser): Promise<Omit<IUserEntityProps, 'password'>> {
+    async execute(user: TRegisterUser): Promise<{user: Omit<IUserEntityProps, 'password'>}> {
         const hash = this.hashService.hash(user.password)
-        const newUser = await this.userRepository.createUser({...user, password: hash})
-        return newUser.toJson
+        const newUser = await this.userRepository.createUser({ ...user, password: hash })
+        return {user: newUser.toJson}
     }
 }

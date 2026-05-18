@@ -10,7 +10,7 @@ export class HashService implements IHashService {
     }
 
     compare(hash: string, password: string): boolean {
-        return bcrypt.compareSync(hash, password)
+        return bcrypt.compareSync(password, hash)
     }
 
 }

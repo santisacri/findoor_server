@@ -36,9 +36,41 @@ interface PropertyEntityProps {
 
 export class PropertyEntity {
 
-    private constructor(
-        private props: PropertyEntityProps
-    ) { }
+    public id: string
+    public ownerId: string
+    public addressId: string
+    public operationType: OperationType
+    public propertyType: PropertyType
+    public title: string
+    public description: string
+    public price: number
+    public currency: Currency
+    public totalAreaM2: number
+    public coveredAreaM2: number
+    public bedrooms: number
+    public bathrooms: number
+    public parkingSpots: number
+    public createdAt: Date
+    public updatedAt: Date
+
+    private constructor(props: PropertyEntityProps) {
+        this.id = props.id
+        this.ownerId = props.ownerId
+        this.addressId = props.addressId
+        this.operationType = props.operationType
+        this.propertyType = props.propertyType
+        this.title = props.title
+        this.description = props.description
+        this.bathrooms = props.bathrooms
+        this.price = props.price
+        this.currency = props.currency
+        this.totalAreaM2 = props.totalAreaM2
+        this.coveredAreaM2 = props.coveredAreaM2
+        this.bedrooms = props.bedrooms
+        this.parkingSpots = props.parkingSpots
+        this.createdAt = props.createdAt
+        this.updatedAt = props.updatedAt
+    }
 
 
     static fromObject(props: PropertyEntityProps) {

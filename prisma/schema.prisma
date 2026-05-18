@@ -119,5 +119,5 @@ model RefreshToken {
   createdAt DateTime  @default(now())
   user      User      @relation(fields: [userId], references: [id])
 
-  @@map("refresh_token")
+  @@map("refresh_tokens")
 }

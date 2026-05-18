@@ -9,7 +9,7 @@ export function errorMiddleware(err: unknown, req: Request, res: Response, next:
         })
     }
 
-    console.log(err)
+    console.log(`unexpected error: ${err}`)
 
     return res.status(500).json({ message: 'Internal server error' })
 }

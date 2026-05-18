@@ -37,16 +37,18 @@ export class CustomError extends Error {
                     const message = error.message.split('\n').at(-1)?.trim();
                     throw new CustomError(  message ?? 'Unique constraint violated', 409);
                 case 'P2025':
-                    throw new CustomError('Record not found', 404);
+                    throw CustomError.notFound('Record not found');
                 case 'P2003':
-                    throw new CustomError('Foreign key violation', 400);
+                    throw CustomError.badRequest('Foreign key violation');
             }
         }
 
         if (error instanceof Prisma.PrismaClientValidationError) {
-            throw new CustomError('Invalid data sent to database', 400);
+            throw CustomError.badRequest('Invalid data sent to database');
         }
 
-        throw new CustomError('Internal Server Error', 500);
+        if(error instanceof CustomError) throw error
+
+        throw CustomError.internal();
     }
 }

@@ -4,6 +4,7 @@ import { Role, UserEntity } from "../../domain/entities/user.entity";
 import { TRegisterUser } from "../../presentation/auth/auth.schemas";
 import { Role as PrismaRole } from "../../../generated/prisma/client";
 import { CustomError } from "../../domain/errors/custom-errors";
+import { error } from "node:console";
 
 type TPrismaUser = {
     name: string;
@@ -20,6 +21,7 @@ export class UserDatasource implements IUserDatasource {
     constructor(
         private readonly prisma: PrismaClient
     ) { }
+
 
     toEntity(prismaUser: TPrismaUser): UserEntity {
         const { role, created_at, ...user } = prismaUser
@@ -40,7 +42,18 @@ export class UserDatasource implements IUserDatasource {
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
+    }
 
+    async getUserByEmail(email: string): Promise<UserEntity> {
+        try {
+            const user = await this.prisma.user.findUniqueOrThrow({
+                where: { email }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
     }
 
 }
