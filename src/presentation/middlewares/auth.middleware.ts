@@ -14,15 +14,20 @@ declare global {
 }
 
 export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.split(' ')[1]
+    try {
+        const token = req.headers.authorization?.split(' ')[1]
 
-    if (!token) throw CustomError.badRequest('Missing token')
+        if (!token) throw CustomError.badRequest('Missing token')
 
-    const payload = jwtService.verify<TJwtLogin>(token, jwtLoginSchema)
+        const payload = jwtService.verify<TJwtLogin>(token, jwtLoginSchema)
 
-    const user = await userRepository.getUserById(payload.sub)
+        const user = await userRepository.getUserById(payload.sub)
 
-    req.user = user
+        req.user = user
 
-    next()
+        next()
+    } catch (error) {
+        next(error)
+    }
+
 }

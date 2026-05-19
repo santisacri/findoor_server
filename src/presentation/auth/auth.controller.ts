@@ -4,11 +4,13 @@ import { IRegisterUserUseCase } from "../../application/use-cases/auth/register-
 import { ILoginUserUseCase } from "../../application/use-cases/auth/login-user.use-case";
 import { IRotateRefreshTokenUseCase } from "../../application/use-cases/auth/rotate-refresh-token.use-case";
 import { CustomError } from "../../domain/errors/custom-errors";
+import { ILogoutUseCase } from "../../application/use-cases/auth/logout.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
     loginUserUseCase: ILoginUserUseCase
     rotateRefreshTokenUseCase: IRotateRefreshTokenUseCase
+    logoutUseCase: ILogoutUseCase
 }
 
 export class AuthController {
@@ -62,6 +64,27 @@ export class AuthController {
             })
 
             res.json({ token: jwt })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    logout = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const global = req.query.global === 'true'
+            const { id } = req.user!
+            const { refreshToken } = req.cookies
+
+            await this.useCases.logoutUseCase.execute(id, refreshToken, global)
+
+            res.clearCookie('refreshToken', {
+                httpOnly: true,
+                secure: envs.IN_PRODUCTION,
+                sameSite: 'strict',
+                path: '/auth/refresh',
+            })
+
+            res.json({ message: 'Logged out' })
         } catch (error) {
             next(error)
         }
