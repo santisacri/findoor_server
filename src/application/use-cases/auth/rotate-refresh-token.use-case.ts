@@ -2,6 +2,7 @@ import { IRefreshTokenRepository } from "../../../domain/contracts/repositories/
 import { IJwtService } from "../../../domain/contracts/services/jwt.service.interface";
 import { RefreshTokenEntity } from "../../../domain/entities/refresh-token.entity";
 import { CustomError } from "../../../domain/errors/custom-errors";
+import { envs } from "../../../env.schema";
 
 export interface IRotateRefreshTokenUseCase {
     execute(token: string): Promise<{ refreshToken: RefreshTokenEntity, jwt: string }>
@@ -9,7 +10,7 @@ export interface IRotateRefreshTokenUseCase {
 
 export class RotateRefreshTokenUseCase implements IRotateRefreshTokenUseCase {
 
-    private readonly jwtExpiry = 60 * 30
+    private readonly jwtExpiry = envs.IN_PRODUCTION ? 60 * 15 : 60 * 60
 
     constructor(
         private readonly refreshTokenRepository: IRefreshTokenRepository,

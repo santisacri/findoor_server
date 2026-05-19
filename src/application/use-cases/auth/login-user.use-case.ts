@@ -5,6 +5,7 @@ import { IJwtService } from "../../../domain/contracts/services/jwt.service.inte
 import { RefreshTokenEntity } from "../../../domain/entities/refresh-token.entity";
 import { IUserEntityProps } from "../../../domain/entities/user.entity";
 import { CustomError } from "../../../domain/errors/custom-errors";
+import { envs } from "../../../env.schema";
 import { TLoginUser } from "../../../presentation/auth/auth.schemas";
 
 export interface ILoginUserUseCase {
@@ -13,7 +14,7 @@ export interface ILoginUserUseCase {
 
 export class LoginUserUseCase implements ILoginUserUseCase {
 
-    private readonly jwtExpiry = 60 * 15
+    private readonly jwtExpiry = envs.IN_PRODUCTION ? 60 * 15 : 60 * 60
 
     constructor(
         private readonly userRepository: IUserRepository,

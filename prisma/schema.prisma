@@ -82,7 +82,7 @@ model Address {
   street       String?
   streetNumber String?  @map("street_number")
   lat          Float?
-  lng          Float?
+  lon          Float?
   property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@map("addresses")
