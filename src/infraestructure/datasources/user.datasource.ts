@@ -56,4 +56,16 @@ export class UserDatasource implements IUserDatasource {
         }
     }
 
+    async getUserById(id: string): Promise<UserEntity> {
+        try {
+            const user = await this.prisma.user.findUniqueOrThrow({
+                where: { id }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
 }

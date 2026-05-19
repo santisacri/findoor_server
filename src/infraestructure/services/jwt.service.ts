@@ -26,7 +26,7 @@ export class JwtService implements IJwtService {
             if (error instanceof jwt.JsonWebTokenError) {
                 throw CustomError.badRequest('Invalid token')
             }
-            throw error  
+            throw error
         }
     }
 

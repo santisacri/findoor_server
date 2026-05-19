@@ -1,7 +1,7 @@
 import z from "zod"
 
 export const jwtLoginSchema = z.object({
-    sub: z.string().trim(),
+    sub: z.string(),
     iat: z.number(),
     exp: z.number(),
     iss: z.literal("Findoor backend"),
