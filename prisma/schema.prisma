@@ -27,6 +27,11 @@ enum PropertyType {
   APARTMENT
 }
 
+enum Currency {
+  ARS
+  USD
+}
+
 model User {
   id            String         @id @default(uuid(7))
   name          String
@@ -46,13 +51,12 @@ model User {
 model Property {
   id            String        @id @default(uuid(7))
   ownerId       String        @map("owner_id")
-  addressId     String
   operationType OperationType @map("operation_type")
   propertyType  PropertyType  @map("property_type")
   title         String
   description   String
   price         Int
-  currency      String
+  currency      Currency      @default(USD)
   totalAreaM2   Int           @map("total_area_m2")
   coveredAreaM2 Int?          @map("covered_area_m2")
   bedrooms      Int
