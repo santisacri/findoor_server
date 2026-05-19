@@ -2,10 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import { envs } from "../../env.schema";
 import { IRegisterUserUseCase } from "../../application/use-cases/auth/register-user.use-case";
 import { ILoginUserUseCase } from "../../application/use-cases/auth/login-user.use-case";
+import { IRotateRefreshTokenUseCase } from "../../application/use-cases/auth/rotate-refresh-token.use-case";
+import { CustomError } from "../../domain/errors/custom-errors";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
     loginUserUseCase: ILoginUserUseCase
+    rotateRefreshTokenUseCase: IRotateRefreshTokenUseCase
 }
 
 export class AuthController {
@@ -37,6 +40,28 @@ export class AuthController {
             })
 
             return res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { refreshToken } = req.cookies
+
+            if (typeof refreshToken !== 'string') throw CustomError.badRequest('Refresh token is not valid')
+
+            const { refreshToken: RT, jwt } = await this.useCases.rotateRefreshTokenUseCase.execute(refreshToken)
+
+            res.cookie('refreshToken', RT.token, {
+                httpOnly: true,
+                secure: envs.IN_PRODUCTION,
+                sameSite: 'strict',
+                path: '/auth/refresh',
+                expires: RT.expiresAt
+            })
+
+            res.json({ token: jwt })
         } catch (error) {
             next(error)
         }

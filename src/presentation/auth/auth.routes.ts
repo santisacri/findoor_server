@@ -12,6 +12,7 @@ export class AuthRoutes {
 
         router.post('/register', [validateBody(registerUserSchema)], authController.registerUser)
         router.post('/login', [validateBody(loginUserSchema)], authController.loginUser)
+        router.get('/refresh', authController.refreshToken)
 
 
         return router

@@ -9,6 +9,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
         private readonly refreshTokenDatasource: IRefreshTokenDatasource
     ) { }
 
+
     async create(userId: string, family?: string): Promise<RefreshTokenEntity> {
         return this.refreshTokenDatasource.create(userId, family)
     }
@@ -23,9 +24,12 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
 
     }
 
-    async deleteByUserId(userId: string): Promise<void> {
-        return this.refreshTokenDatasource.deleteByUserId(userId)
+    async deleteByFamily(family: string): Promise<void> {
+        return this.refreshTokenDatasource.deleteByFamily(family)
+    }
 
+    async globalLogout(userId: string): Promise<void> {
+        return this.refreshTokenDatasource.deleteByUserId(userId)
     }
 
 }

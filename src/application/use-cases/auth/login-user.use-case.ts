@@ -13,7 +13,7 @@ export interface ILoginUserUseCase {
 
 export class LoginUserUseCase implements ILoginUserUseCase {
 
-    private readonly jwtExpiry = 60 * 30
+    private readonly jwtExpiry = 60 * 15
 
     constructor(
         private readonly userRepository: IUserRepository,

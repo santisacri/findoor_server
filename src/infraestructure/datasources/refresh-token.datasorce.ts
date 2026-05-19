@@ -59,6 +59,14 @@ export class RefreshTokenDatasource implements IRefreshTokenDatasource {
 
     }
 
+    async deleteByFamily(family: string): Promise<void> {
+        try {
+            await this.prisma.refreshToken.deleteMany({ where: { family } })
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
     async deleteByUserId(userId: string): Promise<void> {
         try {
             await this.prisma.refreshToken.deleteMany({ where: { userId } })

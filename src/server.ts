@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 import { errorMiddleware } from "./presentation/middlewares/global-error.middleware"
-import { CustomError } from "./domain/errors/custom-errors"
+import cookieParser from "cookie-parser"
 
 
 
@@ -16,6 +16,7 @@ export class Server {
 
     start() {
         this.app.use(express.json())
+        this.app.use(cookieParser())
 
         this.app.use(this.routes)
 
