@@ -3,6 +3,7 @@ import { propertyController } from "../../container/property.container";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import validateBody from "../middlewares/validate-body.middleware";
 import { createPropertySchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
+import { uploadMiddleware } from "../middlewares/upload.middleware";
 
 
 export class PropertyRoutes {
@@ -22,6 +23,12 @@ export class PropertyRoutes {
         router.patch('/:propertyId', [authMiddleware, validateBody(toggleStatusSchema)], propertyController.toggleStatus)
 
         router.delete('/:propertyId', [authMiddleware], propertyController.deleteProperty)
+
+        // photos endpoints
+        router.post('/:propertyId/photos', [authMiddleware, uploadMiddleware.array('photos', 10)], propertyController.uploadPhotos)
+
+        router.delete('/:propertyId/photos/:photoId', [authMiddleware], propertyController.deletePhoto)
+
 
 
         return router

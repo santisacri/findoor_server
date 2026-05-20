@@ -1,5 +1,6 @@
 import { CustomError } from "../errors/custom-errors"
 import { AddressEntity } from "./address.entity"
+import { PhotoEntity } from "./photo.entity"
 
 export enum OperationType {
     SALE = 'SALE',
@@ -34,6 +35,7 @@ interface PropertyEntityProps {
     updatedAt: Date
     isActive?: boolean
     address?: AddressEntity
+    photos?: PhotoEntity[]
 }
 
 export class PropertyEntity {
@@ -54,6 +56,7 @@ export class PropertyEntity {
     public createdAt: Date
     public updatedAt: Date
     public isActive?: boolean
+    public photos?: PhotoEntity[]
     public address?: AddressEntity
 
 
@@ -75,6 +78,7 @@ export class PropertyEntity {
         this.updatedAt = props.updatedAt
         this.address = props.address
         this.isActive = props.isActive
+        this.photos = props.photos
     }
 
 

@@ -46,7 +46,10 @@ export class PropertyDatasource implements IPropertyDatasource {
         try {
             const property = await this.prisma.property.findMany({
                 where: { ownerId: userId },
-                include: { address: true }
+                include: {
+                    address: true,
+                    photos: { orderBy: { order: 'asc' }, take: 1 }
+                }
             })
 
             return property.map(this.toEntity)
@@ -59,7 +62,10 @@ export class PropertyDatasource implements IPropertyDatasource {
         try {
             const property = await this.prisma.property.findUniqueOrThrow({
                 where: { id: propertyId },
-                include: { address: true }
+                include: {
+                    address: true,
+                    photos: { orderBy: { order: 'asc' } }
+                }
             })
 
             return this.toEntity(property)

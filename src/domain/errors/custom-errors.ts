@@ -1,4 +1,5 @@
 import { Prisma } from "../../../generated/prisma/client"
+import { envs } from "../../env.schema"
 
 
 
@@ -32,10 +33,11 @@ export class CustomError extends Error {
 
     static fromPrisma(error: unknown): never {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            !envs.IN_PRODUCTION && console.log(error.message)
             switch (error.code) {
                 case 'P2002':
                     const message = error.message.split('\n').at(-1)?.trim();
-                    throw new CustomError(  message ?? 'Unique constraint violated', 409);
+                    throw new CustomError(message ?? 'Unique constraint violated', 409);
                 case 'P2025':
                     throw CustomError.notFound('Record not found');
                 case 'P2003':
@@ -44,11 +46,12 @@ export class CustomError extends Error {
         }
 
         if (error instanceof Prisma.PrismaClientValidationError) {
+            !envs.IN_PRODUCTION && console.log(error.message)
             throw CustomError.badRequest('Invalid data sent to database');
         }
 
-        if(error instanceof CustomError) throw error
-
+        if (error instanceof CustomError) throw error
+        !envs.IN_PRODUCTION && console.log(error)
         throw CustomError.internal();
     }
 }

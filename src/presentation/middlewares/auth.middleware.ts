@@ -17,7 +17,7 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
     try {
         const token = req.headers.authorization?.split(' ')[1]
 
-        if (!token) throw CustomError.badRequest('Missing token')
+        if (!token) throw CustomError.badRequest('Missing auth token')
 
         const payload = jwtService.verify<TJwtLogin>(token, jwtLoginSchema)
 
