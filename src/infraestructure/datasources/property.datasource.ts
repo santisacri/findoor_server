@@ -2,7 +2,7 @@ import { PrismaClient, Property } from "../../../generated/prisma/client";
 import { IPropertyDatasource } from "../../domain/contracts/datasources/property.datasource.interface";
 import { Currency, OperationType, PropertyEntity, PropertyType } from "../../domain/entities/property.entity";
 import { CustomError } from "../../domain/errors/custom-errors";
-import { TCreateProperty } from "../../presentation/property/property.schemas";
+import { TCreateProperty, TUpdateProperty } from "../../presentation/property/property.schemas";
 
 
 
@@ -58,6 +58,55 @@ export class PropertyDatasource implements IPropertyDatasource {
     async getProperty(propertyId: string): Promise<PropertyEntity> {
         try {
             const property = await this.prisma.property.findUniqueOrThrow({
+                where: { id: propertyId },
+                include: { address: true }
+            })
+
+            return this.toEntity(property)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
+    async update(data: TUpdateProperty, propertyId: string): Promise<PropertyEntity> {
+        const { address, ...propertyData } = data!
+        try {
+            const property = await this.prisma.property.update({
+                where: { id: propertyId },
+                include: { address: true },
+                data: {
+                    ...propertyData,
+                    address: {
+                        update: address
+                    }
+                }
+            })
+
+            return this.toEntity(property)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
+    async toggleStatus(status: boolean, propertyId: string): Promise<PropertyEntity> {
+        try {
+            const property = await this.prisma.property.update({
+                where: { id: propertyId },
+                include: { address: true },
+                data: {
+                    isActive: status
+                }
+            })
+
+            return this.toEntity(property)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
+    async delete(propertyId: string): Promise<PropertyEntity> {
+        try {
+            const property = await this.prisma.property.delete({
                 where: { id: propertyId },
                 include: { address: true }
             })

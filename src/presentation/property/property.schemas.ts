@@ -19,3 +19,13 @@ export const createPropertySchema = z.object({
 })
 
 export type TCreateProperty = z.infer<typeof createPropertySchema>
+
+export const updatePropertySchema = createPropertySchema.extend({
+  isActive: z.boolean()
+})
+
+export type TUpdateProperty = z.infer<typeof updatePropertySchema>
+
+export const toggleStatusSchema = z.object({
+  isActive: z.boolean()
+})

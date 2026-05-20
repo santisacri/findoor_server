@@ -8,7 +8,7 @@ export enum OperationType {
 
 export enum PropertyType {
     APARTMENT = 'APARTMENT',
-    HOUSE ='HOUSE'
+    HOUSE = 'HOUSE'
 }
 
 export enum Currency {
@@ -32,6 +32,7 @@ interface PropertyEntityProps {
     parkingSpots: number
     createdAt: Date
     updatedAt: Date
+    isActive?: boolean
     address?: AddressEntity
 }
 
@@ -52,6 +53,7 @@ export class PropertyEntity {
     public parkingSpots: number
     public createdAt: Date
     public updatedAt: Date
+    public isActive?: boolean
     public address?: AddressEntity
 
 
@@ -72,6 +74,7 @@ export class PropertyEntity {
         this.createdAt = props.createdAt
         this.updatedAt = props.updatedAt
         this.address = props.address
+        this.isActive = props.isActive
     }
 
 

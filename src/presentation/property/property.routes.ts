@@ -2,7 +2,7 @@ import { Router } from "express";
 import { propertyController } from "../../container/property.container";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import validateBody from "../middlewares/validate-body.middleware";
-import { createPropertySchema } from "./property.schemas";
+import { createPropertySchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
 
 
 export class PropertyRoutes {
@@ -17,7 +17,11 @@ export class PropertyRoutes {
 
         router.get('/:propertyId', [authMiddleware], propertyController.getPropertyById)
 
+        router.put('/:propertyId', [authMiddleware, validateBody(updatePropertySchema)], propertyController.updateProperty)
 
+        router.patch('/:propertyId', [authMiddleware, validateBody(toggleStatusSchema)], propertyController.toggleStatus)
+
+        router.delete('/:propertyId', [authMiddleware], propertyController.deleteProperty)
 
 
         return router

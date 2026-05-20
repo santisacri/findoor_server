@@ -2,11 +2,17 @@ import { NextFunction, Request, Response } from "express";
 import { ICreatePropertyUseCase } from "../../application/use-cases/property/create-property.use-case";
 import { IGetAllPropertiesUseCase } from "../../application/use-cases/property/get-all-properties.use-case";
 import { IGetPropertyUseCase } from "../../application/use-cases/property/get-property.use-case";
+import { IUpdatePropertyUseCase } from "../../application/use-cases/property/update-property.use-case";
+import { IDeletePropertyUseCase } from "../../application/use-cases/property/delete-property.use-case";
+import { IToggleStatusUseCase } from "../../application/use-cases/property/toggle-status.use-case";
 
 interface UseCases {
     createPropertyUseCase: ICreatePropertyUseCase,
     getAllPropertiesUseCase: IGetAllPropertiesUseCase,
     getPropertyUseCase: IGetPropertyUseCase,
+    updatePropertyUseCase: IUpdatePropertyUseCase,
+    toggleStatusUseCase: IToggleStatusUseCase,
+    deletePropertyUseCase: IDeletePropertyUseCase
 }
 
 export class PropertyController {
@@ -42,6 +48,39 @@ export class PropertyController {
         const propertyId = req.params.propertyId as string
         try {
             const property = await this.useCases.getPropertyUseCase.execute(propertyId)
+
+            res.json({ property })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    updateProperty = async (req: Request, res: Response, next: NextFunction) => {
+        const propertyId = req.params.propertyId as string
+        try {
+            const property = await this.useCases.updatePropertyUseCase.execute(req.body, propertyId)
+
+            res.json({ property })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    toggleStatus = async (req: Request, res: Response, next: NextFunction) => {
+        const propertyId = req.params.propertyId as string
+        try {
+            const property = await this.useCases.toggleStatusUseCase.execute(req.body, propertyId)
+
+            res.json({ property })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    deleteProperty = async (req: Request, res: Response, next: NextFunction) => {
+        const propertyId = req.params.propertyId as string
+        try {
+            const property = await this.useCases.deletePropertyUseCase.execute(propertyId)
 
             res.json({ property })
         } catch (error) {
