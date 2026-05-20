@@ -69,6 +69,7 @@ model Property {
   address       Address?
   favorites     Favorite[]
   contactLeads  ContactLead[]
+  photos        Photo[]
 
   @@map("properties")
 }
@@ -111,6 +112,18 @@ model ContactLead {
   sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@map("contact_leads")
+}
+
+model Photo {
+  id         String @id @default(uuid(7))
+  propertyId String @map("property_id")
+  url        String
+  publicId   String @map("public_id")
+  order      Int    @default(0)
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("photos")
 }
 
 model RefreshToken {
