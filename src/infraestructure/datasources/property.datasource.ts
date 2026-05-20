@@ -43,11 +43,29 @@ export class PropertyDatasource implements IPropertyDatasource {
     }
 
     async getAllProperties(userId: string): Promise<PropertyEntity[]> {
-        throw new Error("Method not implemented.");
+        try {
+            const property = await this.prisma.property.findMany({
+                where: { ownerId: userId },
+                include: { address: true }
+            })
+
+            return property.map(this.toEntity)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
     }
 
-    async getProperty(userId: string, propertyId: string): Promise<PropertyEntity> {
-        throw new Error("Method not implemented.");
+    async getProperty(propertyId: string): Promise<PropertyEntity> {
+        try {
+            const property = await this.prisma.property.findUniqueOrThrow({
+                where: { id: propertyId },
+                include: { address: true }
+            })
+
+            return this.toEntity(property)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
     }
 
 }

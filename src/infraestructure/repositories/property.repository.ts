@@ -16,8 +16,8 @@ export class PropertyRepository implements IPropertyRepository {
     getAllProperties(userId: string): Promise<PropertyEntity[]> {
         return this.propertyDatasource.getAllProperties(userId)
     }
-    getProperty(userId: string, propertyId: string): Promise<PropertyEntity> {
-        return this.propertyDatasource.getProperty(userId, propertyId)
+    getProperty(propertyId: string): Promise<PropertyEntity> {
+        return this.propertyDatasource.getProperty(propertyId)
     }
 
 }
