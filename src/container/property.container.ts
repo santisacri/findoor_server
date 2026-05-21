@@ -7,15 +7,10 @@ import { ToggleStatusUseCase } from "../application/use-cases/property/toggle-st
 import { UpdatePropertyUseCase } from "../application/use-cases/photo/update-property.use-case";
 import { UploadPhotosUseCase } from "../application/use-cases/photo/upload-photos.use-case";
 import { PropertyController } from "../presentation/property/property.controller";
-import { favoriteRepository, photoRepository, propertyRepository } from "./repositories.container";
+import { photoRepository, propertyRepository } from "./repositories.container";
 import { cloudinaryService } from "./services.container";
-import { ToggleFavoriteUseCase } from "../application/use-cases/favorite/toggle-favorite.use-case";
-import { GetUserFavoritesUseCase } from "../application/use-cases/favorite/get-user-favorites.use-case";
-import { PhotoController } from "../presentation/property/photo.controller";
-import { FavoriteController } from "../presentation/property/favorite.controller";
 
 
-// property use cases
 const createPropertyUseCase = new CreatePropertyUseCase(propertyRepository)
 const getAllPropertiesUseCase = new GetAllPropertiesUseCase(propertyRepository)
 const getPropertyUseCase = new GetPropertyUseCase(propertyRepository)
@@ -31,17 +26,3 @@ export const propertyController = new PropertyController({
     deletePropertyUseCase,
     toggleStatusUseCase
 })
-
-// photo use cases
-const uploadPhotosUseCase = new UploadPhotosUseCase(propertyRepository, cloudinaryService, photoRepository)
-const deletePhotoUseCase = new DeletePhotoUseCase(photoRepository, propertyRepository, cloudinaryService)
-
-export const photoController = new PhotoController({ uploadPhotosUseCase, deletePhotoUseCase })
-
-// favorite use cases
-const toggleFavoriteUseCase = new ToggleFavoriteUseCase(favoriteRepository, propertyRepository)
-const getUserFavoritesUseCase = new GetUserFavoritesUseCase(favoriteRepository)
-
-export const favoriteController = new FavoriteController({ toggleFavoriteUseCase, getUserFavoritesUseCase })
-
-
