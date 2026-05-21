@@ -1,7 +1,6 @@
 import { CustomError } from "../errors/custom-errors"
 
-
-interface FavoriteEntityProps {
+export interface IFavoriteEntityProps {
     id: string
     userId: string
     propertyId: string
@@ -10,18 +9,20 @@ interface FavoriteEntityProps {
 
 export class FavoriteEntity {
     private constructor(
-        private props: FavoriteEntityProps
+        public id: string,
+        public userId: string,
+        public propertyId: string,
+        public createdAt: Date
     ) { }
 
-
-    static fromObject(props: FavoriteEntityProps) {
-        const { createdAt, id, propertyId, userId } = props
+    static fromObject(props: IFavoriteEntityProps) {
+        const { id, userId, propertyId, createdAt } = props
 
         if (!id) throw CustomError.badRequest('Missing id')
-        if (!createdAt) throw CustomError.badRequest('Missing createdAt')
-        if (!propertyId) throw CustomError.badRequest('Missing propertyId')
         if (!userId) throw CustomError.badRequest('Missing userId')
+        if (!propertyId) throw CustomError.badRequest('Missing propertyId')
+        if (!createdAt) throw CustomError.badRequest('Missing createdAt')
 
-        return new FavoriteEntity(props)
+        return new FavoriteEntity(id, userId, propertyId, createdAt)
     }
 }

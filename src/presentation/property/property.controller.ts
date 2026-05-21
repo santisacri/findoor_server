@@ -2,11 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { ICreatePropertyUseCase } from "../../application/use-cases/property/create-property.use-case";
 import { IGetAllPropertiesUseCase } from "../../application/use-cases/property/get-all-properties.use-case";
 import { IGetPropertyUseCase } from "../../application/use-cases/property/get-property.use-case";
-import { IUpdatePropertyUseCase } from "../../application/use-cases/property/update-property.use-case";
+import { IUpdatePropertyUseCase } from "../../application/use-cases/photo/update-property.use-case";
 import { IDeletePropertyUseCase } from "../../application/use-cases/property/delete-property.use-case";
 import { IToggleStatusUseCase } from "../../application/use-cases/property/toggle-status.use-case";
-import { IUploadPhotosUseCase } from "../../application/use-cases/property/upload-photos.use-case";
-import { IDeletePhotoUseCase } from "../../application/use-cases/property/delete-photo.use-case";
+
 
 interface UseCases {
     createPropertyUseCase: ICreatePropertyUseCase,
@@ -14,9 +13,7 @@ interface UseCases {
     getPropertyUseCase: IGetPropertyUseCase,
     updatePropertyUseCase: IUpdatePropertyUseCase,
     toggleStatusUseCase: IToggleStatusUseCase,
-    deletePropertyUseCase: IDeletePropertyUseCase,
-    uploadPhotosUseCase: IUploadPhotosUseCase,
-    deletePhotoUseCase: IDeletePhotoUseCase
+    deletePropertyUseCase: IDeletePropertyUseCase
 }
 
 export class PropertyController {
@@ -101,30 +98,4 @@ export class PropertyController {
             next(error)
         }
     }
-
-    uploadPhotos = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const files = req.files as Express.Multer.File[]
-            const photos = await this.useCases.uploadPhotosUseCase.execute(
-                req.params.propertyId as string,
-                req.user!.id,
-                files
-            )
-            res.json(photos)
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    deletePhoto = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { propertyId, photoId } = req.params
-            await this.useCases.deletePhotoUseCase.execute(photoId as string, propertyId as string, req.user!.id)
-            res.status(200).json({ messge: 'Photo deleted succesfully'})
-        } catch (error) {
-            next(error)
-        }
-    }
-
-
 }

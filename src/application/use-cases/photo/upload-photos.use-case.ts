@@ -18,8 +18,7 @@ export class UploadPhotosUseCase implements IUploadPhotosUseCase {
 
     async execute(propertyId: string, userId: string, files: Express.Multer.File[]): Promise<PhotoEntity[]> {
         const property = await this.propertyRepository.getProperty(propertyId)
-        if (!property) throw CustomError.notFound('Propiedad no encontrada')
-        if (property.ownerId !== userId) throw CustomError.forbidden('No autorizado')
+        if (property.ownerId !== userId) throw CustomError.forbidden('Unauthorized')
 
         const uploaded = await Promise.all(
             files.map((file, index) =>
