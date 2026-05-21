@@ -5,12 +5,14 @@ import { ILoginUserUseCase } from "../../application/use-cases/auth/login-user.u
 import { IRotateRefreshTokenUseCase } from "../../application/use-cases/auth/rotate-refresh-token.use-case";
 import { CustomError } from "../../domain/errors/custom-errors";
 import { ILogoutUseCase } from "../../application/use-cases/auth/logout.use-case";
+import { IChangePasswordUseCase } from "../../application/use-cases/auth/change-password.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
     loginUserUseCase: ILoginUserUseCase
     rotateRefreshTokenUseCase: IRotateRefreshTokenUseCase
     logoutUseCase: ILogoutUseCase
+    changePasswordUseCase: IChangePasswordUseCase
 }
 
 export class AuthController {
@@ -85,6 +87,18 @@ export class AuthController {
             })
 
             res.json({ message: 'Logged out' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    changePassword = async (req: Request, res: Response, next: NextFunction) => {
+        const data = req.body
+        const user = req.user!
+        try {
+            const updatedUser = await this.useCases.changePasswordUseCase.execute(data, user)
+
+            res.json({updatedUser})
         } catch (error) {
             next(error)
         }

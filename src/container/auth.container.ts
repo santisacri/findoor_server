@@ -1,3 +1,4 @@
+import { ChangePasswordUseCase } from "../application/use-cases/auth/change-password.use-case";
 import { LoginUserUseCase } from "../application/use-cases/auth/login-user.use-case";
 import { LogoutUseCase } from "../application/use-cases/auth/logout.use-case";
 import { RegisterUserUseCase } from "../application/use-cases/auth/register-user.use-case";
@@ -12,6 +13,13 @@ const registerUserUseCase = new RegisterUserUseCase(userRepository, hashService)
 const loginUserUseCase = new LoginUserUseCase(userRepository, refreshTokenRepository, hashService, jwtService)
 const rotateRefreshTokenUseCase = new RotateRefreshTokenUseCase(refreshTokenRepository, jwtService)
 const logoutUseCase = new LogoutUseCase(refreshTokenRepository)
+const changePasswordUseCase = new ChangePasswordUseCase(userRepository, hashService)
 
 
-export const authController = new AuthController({ registerUserUseCase, loginUserUseCase, rotateRefreshTokenUseCase, logoutUseCase })
+export const authController = new AuthController({ 
+    registerUserUseCase, 
+    loginUserUseCase, 
+    rotateRefreshTokenUseCase, 
+    logoutUseCase, 
+    changePasswordUseCase 
+})

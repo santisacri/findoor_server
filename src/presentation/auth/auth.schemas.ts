@@ -15,3 +15,11 @@ export const loginUserSchema = z.object({
 })
 
 export type TLoginUser = z.infer<typeof loginUserSchema>
+
+export const changePasswordSchema = z.object({
+    currentPassword: z.string().min(8).max(16),
+    newPassword: z.string().min(8).max(16),
+    repeatedPassword: z.string().min(8).max(16),
+})
+
+export type TChangePassword = z.infer<typeof changePasswordSchema>

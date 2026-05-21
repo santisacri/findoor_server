@@ -56,3 +56,7 @@ Separación estricta entre datasources, repositories y use cases con inyección 
 - Sistema de reviews
 - Búsqueda por radio geográfico
 - Planes pagos / destacados
+
+
+
+TODO: agregar cambio de password autenticado y luego terminar core(Favorites, contactLead)

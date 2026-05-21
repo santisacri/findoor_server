@@ -6,4 +6,5 @@ export interface IUserRepository {
     createUser(user: TRegisterUser): Promise<UserEntity>
     getUserByEmail(email: string): Promise<UserEntity>
     getUserById(id: string): Promise<UserEntity>
+    save(user: UserEntity): Promise<UserEntity>
 }
