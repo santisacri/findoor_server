@@ -12,11 +12,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  SEEKER
-  OWNER
-}
-
 enum OperationType {
   SALE
   RENT
@@ -37,7 +32,6 @@ model User {
   name          String
   email         String         @unique()
   password      String
-  role          Role           @default(SEEKER)
   phone         Int?
   created_at    DateTime       @default(now())
   properties    Property[]

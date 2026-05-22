@@ -1,20 +1,11 @@
 import { PrismaClient, User } from "../../../generated/prisma/client";
 import { IUserDatasource } from "../../domain/contracts/datasources/user.datasource.interface";
-import { Role, UserEntity } from "../../domain/entities/user.entity";
+import { UserEntity } from "../../domain/entities/user.entity";
 import { TRegisterUser } from "../../presentation/auth/auth.schemas";
-import { Role as PrismaRole } from "../../../generated/prisma/client";
 import { CustomError } from "../../domain/errors/custom-errors";
 
 
-type TPrismaUser = {
-    name: string;
-    password: string;
-    email: string;
-    phone: number | null;
-    id: string;
-    role: PrismaRole;
-    created_at: Date;
-}
+
 
 export class UserDatasource implements IUserDatasource {
 
@@ -23,22 +14,20 @@ export class UserDatasource implements IUserDatasource {
     ) { }
 
 
-    toEntity(prismaUser: TPrismaUser): UserEntity {
-        const { role, created_at, ...user } = prismaUser
+    toEntity(prismaUser: User): UserEntity {
+        const { created_at, ...user } = prismaUser
         return UserEntity.fromObject({
             ...user,
             createdAt: created_at,
-            role: role as unknown as Role
         })
     }
 
     toPrisma(userEntity: UserEntity): User {
-        const { role, createdAt, phone, ...user } = userEntity
+        const { createdAt, phone, ...user } = userEntity
         return {
             ...user,
             phone: phone ?? null,
             created_at: createdAt,
-            role: role as unknown as PrismaRole
         }
     }
 
