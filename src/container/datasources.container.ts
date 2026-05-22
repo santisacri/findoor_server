@@ -1,4 +1,5 @@
 import { prisma } from "../infraestructure/database/prisma";
+import { ContactLeadDatasource } from "../infraestructure/datasources/contact-lead.datasource";
 import { FavoriteDatasource } from "../infraestructure/datasources/favorite.datasource";
 import { PhotoDatasource } from "../infraestructure/datasources/photo.datasource";
 import { PropertyDatasource } from "../infraestructure/datasources/property.datasource";
@@ -12,3 +13,4 @@ export const refreshTokenDatasource = new RefreshTokenDatasource(prisma)
 export const propertyDatasource = new PropertyDatasource(prisma)
 export const photoDatasource = new PhotoDatasource(prisma)
 export const favoriteDatasource = new FavoriteDatasource(prisma)
+export const contactLeadDatasource = new ContactLeadDatasource(prisma)
