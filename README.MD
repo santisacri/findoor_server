@@ -5,23 +5,15 @@ Portal inmobiliario simplificado para publicar y buscar propiedades en venta y a
 ## Stack
 - **Backend:** Node.js, TypeScript, Express, Prisma, PostgreSQL
 - **Frontend:** React, TypeScript, Tailwind CSS
-- **Auth:** JWT con access + refresh tokens, rotación de refresh tokens, httpOnly cookies, logout local(por family) y global(por userId)
+- **Auth:** JWT con access + refresh tokens, rotación de refresh tokens, httpOnly cookies, logout local y global
 - **Storage:** Cloudinary (fotos)
-- **Email:** Nodemailer + Gmail
-- **Deploy:** Railway (backend + db) / Vercel (frontend)
+- **Email:** Resend
+- **Seguridad:** Helmet, CORS, Rate limiting (global y en auth)
+- **Deploy:** Railway (backend + DB) / Vercel (frontend)
 
 ## Arquitectura
 Backend estructurado con Clean Architecture (Domain → Use Cases → Infrastructure → Presentation).
 Separación estricta entre datasources, repositories y use cases con inyección de dependencias.
-
-## Funcionalidades
-- Users pueden ver y publicar propiedades
-- Users pueden filtrar por: precio, lugar, tipo de propiedad y tipo de operacion
-- Todos los Users por defecto son Seekers, se vuelven Owners cuando tienen propiedades en venta
-- Para poder publicar o contactar a un Owner deben estar registrados
-- Auth para proteccion de rutas
-- Los Owners pueden subir fotos de su propiedad
-- Los Owners tienen un panel basico donde pueden ver ContactLeads, visitas y administrar sus propiedades
 
 ## Setup local
 1. Clonar el repo
@@ -30,33 +22,32 @@ Separación estricta entre datasources, repositories y use cases con inyección 
 4. `npm run migrate`
 5. `npm run dev`
 
-### Usuarios
+## Funcionalidades
+
+### Auth
 - Registro e inicio de sesión con JWT
-- Todo usuario es Seeker por defecto
-- Un usuario se convierte en Owner al publicar su primera propiedad
+- Cambio de contraseña autenticado
+- Logout local (invalida el token actual) y global (invalida todos los tokens del usuario)
 
 ### Propiedades
+- Feed público con paginación y filtros (precio, ciudad, tipo, operación, ambientes, superficie, cocheras)
 - Publicar propiedad con fotos, descripción, precio y ubicación
 - Tipos: Casa, Departamento
 - Operaciones: Venta, Alquiler
-- Filtros: precio, ubicación, tipo de propiedad, tipo de operación
 - Ver detalle de propiedad
 
 ### Seekers
-- Guardar propiedades en favoritos
+- Guardar y quitar propiedades de favoritos (toggle)
 - Contactar al Owner mediante un mensaje
 
 ### Panel del Owner
-- Ver y administrar sus propiedades (activar/desactivar/editar)
+- Un usuario se convierte en Owner al publicar su primera propiedad
+- Ver y administrar sus propiedades (activar/desactivar/editar/eliminar)
+- Subir y eliminar fotos de sus propiedades
 - Ver ContactLeads recibidos (leídos / no leídos)
 
 ## Fuera de scope (v2)
-- Mapa interactivo
-- Chat en tiempo real
+- Mapa interactivo con búsqueda por radio geográfico
+- Chat en tiempo real entre Seeker y Owner
 - Sistema de reviews
-- Búsqueda por radio geográfico
 - Planes pagos / destacados
-
-
-
-TODO: agregar cambio de password autenticado y luego terminar core(Favorites, contactLead)
