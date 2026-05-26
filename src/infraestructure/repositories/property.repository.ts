@@ -1,7 +1,7 @@
 import { IPropertyDatasource } from "../../domain/contracts/datasources/property.datasource.interface";
 import { IPropertyRepository } from "../../domain/contracts/repositories/property.repository.interface";
 import { PropertyEntity } from "../../domain/entities/property.entity";
-import { TCreateProperty, TUpdateProperty } from "../../presentation/property/property.schemas";
+import { TCreateProperty, TGetProperties, TUpdateProperty } from "../../presentation/property/property.schemas";
 
 
 export class PropertyRepository implements IPropertyRepository {
@@ -11,13 +11,16 @@ export class PropertyRepository implements IPropertyRepository {
     ) { }
 
 
+    getAllProperties(filters: TGetProperties): Promise<{ properties: PropertyEntity[]; total: number; }> {
+        return this.propertyDatasource.getAllProperties(filters)
+    }
 
     createProperty(data: TCreateProperty, userId: string): Promise<PropertyEntity> {
         return this.propertyDatasource.create(data, userId)
     }
 
-    getAllProperties(userId: string): Promise<PropertyEntity[]> {
-        return this.propertyDatasource.getAllProperties(userId)
+    getOwnerProperties(userId: string): Promise<PropertyEntity[]> {
+        return this.propertyDatasource.getOwnerProperties(userId)
     }
 
     getProperty(propertyId: string): Promise<PropertyEntity> {
@@ -39,5 +42,5 @@ export class PropertyRepository implements IPropertyRepository {
     deleteProperty(propertyId: string): Promise<PropertyEntity> {
         return this.propertyDatasource.delete(propertyId)
     }
-    
+
 }

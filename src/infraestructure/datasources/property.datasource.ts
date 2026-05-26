@@ -2,7 +2,8 @@ import { PrismaClient, Property } from "../../../generated/prisma/client";
 import { IPropertyDatasource } from "../../domain/contracts/datasources/property.datasource.interface";
 import { Currency, OperationType, PropertyEntity, PropertyType } from "../../domain/entities/property.entity";
 import { CustomError } from "../../domain/errors/custom-errors";
-import { TCreateProperty, TUpdateProperty } from "../../presentation/property/property.schemas";
+import { TCreateProperty, TGetProperties, TUpdateProperty } from "../../presentation/property/property.schemas";
+import { createWhereClause } from "../helpers";
 
 
 
@@ -11,7 +12,7 @@ export class PropertyDatasource implements IPropertyDatasource {
     constructor(
         private readonly prisma: PrismaClient
     ) { }
-    
+
 
     private toEntity(record: Property): PropertyEntity {
         const { currency, operationType, propertyType, ...rest } = record
@@ -43,17 +44,36 @@ export class PropertyDatasource implements IPropertyDatasource {
 
     }
 
-    async getAllProperties(userId: string): Promise<PropertyEntity[]> {
+    async getAllProperties(filters: TGetProperties): Promise<{ properties: PropertyEntity[], total: number }> {
+        const where = createWhereClause(filters)
+
+        const [properties, total] = await this.prisma.$transaction([
+            this.prisma.property.findMany({
+                where,
+                skip: (filters.page - 1) * 25,
+                take: 25,
+                include: { address: true, photos: { take: 1, orderBy: { order: 'asc' } } }
+            }),
+            this.prisma.property.count({ where })
+        ])
+
+        return {
+            properties: properties.map(this.toEntity),
+            total
+        }
+    }
+
+    async getOwnerProperties(userId: string): Promise<PropertyEntity[]> {
         try {
-            const property = await this.prisma.property.findMany({
+            const properties = await this.prisma.property.findMany({
                 where: { ownerId: userId },
                 include: {
                     address: true,
-                    photos: { orderBy: { order: 'asc' }, take: 1 }
+                    photos: { orderBy: { order: 'asc' }, take: 1 },
                 }
             })
 
-            return property.map(this.toEntity)
+            return properties.map(this.toEntity)
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }

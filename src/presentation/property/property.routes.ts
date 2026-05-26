@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import validateBody from "../middlewares/validate-body.middleware";
-import { createPropertySchema, sendMessageSchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
+import { createPropertySchema, getAllPropertiesSchema, sendMessageSchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
 import { uploadMiddleware } from "../middlewares/upload.middleware";
 import { propertyController } from "../../container/property.container";
 import { favoriteController } from "../../container/favorite.container";
@@ -17,7 +17,7 @@ export class PropertyRoutes {
 
         // static routes
         router.post('/', [authMiddleware, validateBody(createPropertySchema)], propertyController.createProperty)
-        router.get('/', [authMiddleware], propertyController.getAllProperties)
+        router.get('/', [], propertyController.getAllProperties)
         router.get('/me', [authMiddleware, ownerMiddleware], propertyController.getOwnerProperties)
         router.get('/favorites', [authMiddleware], favoriteController.getFavorites)
         router.get('/leads', [authMiddleware, ownerMiddleware], leadController.getLeads)

@@ -1,19 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import { ICreatePropertyUseCase } from "../../application/use-cases/property/create-property.use-case";
-import { IGetAllPropertiesUseCase } from "../../application/use-cases/property/get-all-properties.use-case";
 import { IGetPropertyUseCase } from "../../application/use-cases/property/get-property.use-case";
 import { IUpdatePropertyUseCase } from "../../application/use-cases/photo/update-property.use-case";
 import { IDeletePropertyUseCase } from "../../application/use-cases/property/delete-property.use-case";
 import { IToggleStatusUseCase } from "../../application/use-cases/property/toggle-status.use-case";
+import { IGetOwnerPropertiesUseCase } from "../../application/use-cases/property/get-owner-properties.use-case";
+import { IGetAllPropertiesUseCase } from "../../application/use-cases/property/get-all-properties.use-case";
+import { getPropertiesSchema } from "./property.schemas";
 
 
 interface UseCases {
     createPropertyUseCase: ICreatePropertyUseCase,
-    getAllPropertiesUseCase: IGetAllPropertiesUseCase,
+    getOwnerPropertiesUseCase: IGetOwnerPropertiesUseCase,
     getPropertyUseCase: IGetPropertyUseCase,
     updatePropertyUseCase: IUpdatePropertyUseCase,
     toggleStatusUseCase: IToggleStatusUseCase,
-    deletePropertyUseCase: IDeletePropertyUseCase
+    deletePropertyUseCase: IDeletePropertyUseCase,
+    getAllPropertiesUseCase: IGetAllPropertiesUseCase
 }
 
 export class PropertyController {
@@ -36,12 +39,11 @@ export class PropertyController {
     }
 
     getAllProperties = async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.user!
-
         try {
-            const properties = await this.useCases.getAllPropertiesUseCase.execute(id)
+            const filters = getPropertiesSchema.parse(req.query)
+            const { properties, total } = await this.useCases.getAllPropertiesUseCase.execute(filters)
 
-            res.json({ properties })
+            res.json({ properties, total })
         } catch (error) {
             next(error)
         }
@@ -51,7 +53,7 @@ export class PropertyController {
         const { id } = req.user!
 
         try {
-            const properties = await this.useCases.getAllPropertiesUseCase.execute(id)
+            const properties = await this.useCases.getOwnerPropertiesUseCase.execute(id)
 
             res.json({ properties })
         } catch (error) {
@@ -88,9 +90,10 @@ export class PropertyController {
     toggleStatus = async (req: Request, res: Response, next: NextFunction) => {
         const propertyId = req.params.propertyId as string
         const { id } = req.user!
+        const { isActive } = req.body
 
         try {
-            const property = await this.useCases.toggleStatusUseCase.execute(req.body, propertyId, id)
+            const property = await this.useCases.toggleStatusUseCase.execute(isActive, propertyId, id)
 
             res.json({ property })
         } catch (error) {

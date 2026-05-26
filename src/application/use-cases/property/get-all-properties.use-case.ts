@@ -1,18 +1,19 @@
 import { IPropertyRepository } from "../../../domain/contracts/repositories/property.repository.interface";
 import { PropertyEntity } from "../../../domain/entities/property.entity";
+import { TGetProperties } from "../../../presentation/property/property.schemas";
 
 export interface IGetAllPropertiesUseCase {
-    execute(userId: string): Promise<PropertyEntity[]>
+    execute(filters: TGetProperties): Promise<{ properties: PropertyEntity[]; total: number; }>
 }
 
 export class GetAllPropertiesUseCase implements IGetAllPropertiesUseCase {
 
     constructor(
-        private readonly propertyRepository: IPropertyRepository
+        private readonly propertyRepo: IPropertyRepository
     ) { }
 
-    execute(userId: string): Promise<PropertyEntity[]> {
-        return this.propertyRepository.getAllProperties(userId)
+    execute(filters: TGetProperties): Promise<{ properties: PropertyEntity[]; total: number; }> {
+        return this.propertyRepo.getAllProperties(filters)
     }
 
 }

@@ -39,10 +39,32 @@ export const updatePropertySchema = createPropertySchema.extend({
 
 export type TUpdateProperty = z.infer<typeof updatePropertySchema>
 
+export const getPropertiesSchema = z.object({
+  page: z.string().transform(Number).default(1),
+  city: z.string().optional(),
+  minPrice: z.string().transform(Number).optional(),
+  maxPrice: z.string().transform(Number).optional(),
+  operationType: z.enum(OperationType).optional(),
+  propertyType: z.enum(PropertyType).optional(),
+  bedrooms: z.string().transform(Number).optional(),
+  bathrooms: z.string().transform(Number).optional(),
+  minTotalArea: z.string().transform(Number).optional(),
+  maxTotalArea: z.string().transform(Number).optional(),
+  minCoveredArea: z.string().transform(Number).optional(),
+  maxCoveredArea: z.string().transform(Number).optional(),
+  parkingSpots: z.string().transform(Number).optional(),
+})
+
+export type TGetProperties = z.infer<typeof getPropertiesSchema>
+
 export const toggleStatusSchema = z.object({
   isActive: z.boolean()
 })
 
 export const sendMessageSchema = z.object({
   message: z.string().min(10).max(80)
+})
+
+export const getAllPropertiesSchema = z.object({
+  page: z.number().min(1)
 })
