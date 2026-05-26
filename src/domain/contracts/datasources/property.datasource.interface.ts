@@ -5,6 +5,7 @@ export interface IPropertyDatasource {
     create(data: TCreateProperty, userId: string): Promise<PropertyEntity>
     getAllProperties(userId: string): Promise<PropertyEntity[]>
     getProperty(propertyId: string): Promise<PropertyEntity>
+    countByOwner(ownerId: string): Promise<number>
     update(data: TUpdateProperty, propertyId: string): Promise<PropertyEntity>
     toggleStatus(status: boolean, propertyId: string): Promise<PropertyEntity>
     delete(propertyId: string): Promise<PropertyEntity>

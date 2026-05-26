@@ -11,6 +11,7 @@ export class PropertyDatasource implements IPropertyDatasource {
     constructor(
         private readonly prisma: PrismaClient
     ) { }
+    
 
     private toEntity(record: Property): PropertyEntity {
         const { currency, operationType, propertyType, ...rest } = record
@@ -72,6 +73,14 @@ export class PropertyDatasource implements IPropertyDatasource {
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
+    }
+
+    async countByOwner(ownerId: string): Promise<number> {
+        const count = await this.prisma.property.count({
+            where: { ownerId }
+        })
+
+        return count
     }
 
     async update(data: TUpdateProperty, propertyId: string): Promise<PropertyEntity> {

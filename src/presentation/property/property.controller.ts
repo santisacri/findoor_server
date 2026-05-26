@@ -47,6 +47,18 @@ export class PropertyController {
         }
     }
 
+    getOwnerProperties = async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.user!
+
+        try {
+            const properties = await this.useCases.getAllPropertiesUseCase.execute(id)
+
+            res.json({ properties })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     getPropertyById = async (req: Request, res: Response, next: NextFunction) => {
         const propertyId = req.params.propertyId as string
         const { id } = req.user!
