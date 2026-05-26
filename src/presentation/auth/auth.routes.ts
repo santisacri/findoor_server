@@ -3,7 +3,7 @@ import { authController } from "../../container/auth.container";
 import validateBody from "../middlewares/validate-body.middleware";
 import { changePasswordSchema, loginUserSchema, registerUserSchema } from "./auth.schemas";
 import { authMiddleware } from "../middlewares/auth.middleware";
-import { authRateLimit } from "../middlewares/rate-limiting.middleware";
+import { authRateLimit } from "../middlewares/rate-limit.middleware";
 
 
 
