@@ -23,8 +23,8 @@ export class UserRepository implements IUserRepository {
 
     }
 
-    createUser(user: TRegisterUser): Promise<UserEntity> {
-        return this.userDatasource.createUser(user)
+    createUser(user: TRegisterUser, verificationToken: string): Promise<UserEntity> {
+        return this.userDatasource.createUser(user, verificationToken)
     }
 
 }

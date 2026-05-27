@@ -28,17 +28,19 @@ enum Currency {
 }
 
 model User {
-  id            String         @id @default(uuid(7))
-  name          String
-  email         String         @unique()
-  password      String
-  phone         Int?
-  isValidated   Boolean        @default(false) @map("is_validated")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  properties    Property[]
-  favorites     Favorite[]
-  contactLeads  ContactLead[]
-  refreshTokens RefreshToken[]
+  id                    String         @id @default(uuid(7))
+  name                  String
+  email                 String         @unique()
+  password              String
+  phone                 Int?
+  isVerified            Boolean        @default(false) @map("is_verified")
+  createdAt             DateTime       @default(now()) @map("created_at")
+  verificationToken     String?        @map("verification_token")
+  verificationExpiresAt DateTime?      @map("verification_expires_at")
+  properties            Property[]
+  favorites             Favorite[]
+  contactLeads          ContactLead[]
+  refreshTokens         RefreshToken[]
 
   @@map("users")
 }

@@ -3,7 +3,7 @@ import { UserEntity } from "../../entities/user.entity";
 
 
 export interface IUserDatasource {
-    createUser(user: TRegisterUser): Promise<UserEntity>
+    createUser(user: TRegisterUser, verificationToken: string): Promise<UserEntity>
     getUserByEmail(email: string): Promise<UserEntity>
     getUserById(id: string): Promise<UserEntity>
     save(user: UserEntity): Promise<UserEntity>

@@ -6,7 +6,6 @@ import { CustomError } from "../../domain/errors/custom-errors";
 
 
 
-
 export class UserDatasource implements IUserDatasource {
 
     constructor(
@@ -15,28 +14,24 @@ export class UserDatasource implements IUserDatasource {
 
 
     toEntity(prismaUser: User): UserEntity {
-        const { created_at, ...user } = prismaUser
+        const { verificationExpiresAt, verificationToken, ...user } = prismaUser
         return UserEntity.fromObject({
             ...user,
-            createdAt: created_at,
         })
     }
 
-    toPrisma(userEntity: UserEntity): User {
-        const { createdAt, phone, ...user } = userEntity
-        return {
-            ...user,
-            phone: phone ?? null,
-            created_at: createdAt,
-        }
-    }
 
     async save(user: UserEntity): Promise<UserEntity> {
-        const prismaUser = this.toPrisma(user)
         try {
             const record = await this.prisma.user.update({
                 where: { id: user.id },
-                data: prismaUser
+                data: {
+                    name: user.name,
+                    email: user.email,
+                    password: user.password,
+                    phone: user.phone ?? null,
+                    isVerified: user.isVerified
+                }
             })
 
             return this.toEntity(record)
@@ -45,10 +40,15 @@ export class UserDatasource implements IUserDatasource {
         }
     }
 
-    async createUser(user: TRegisterUser): Promise<UserEntity> {
+    async createUser(user: TRegisterUser, verificationToken: string): Promise<UserEntity> {
+        const verificationExpiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24)
         try {
             const newUser = await this.prisma.user.create({
-                data: user
+                data: {
+                    ...user,
+                    verificationToken,
+                    verificationExpiresAt
+                }
             })
 
             return this.toEntity(newUser)
