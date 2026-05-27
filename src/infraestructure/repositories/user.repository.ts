@@ -10,6 +10,14 @@ export class UserRepository implements IUserRepository {
         private readonly userDatasource: IUserDatasource
     ) { }
 
+    findByVerificationToken(token: string): Promise<UserEntity> {
+        return this.userDatasource.findByVerificationToken(token)
+    }
+
+    verifyUser(userId: string): Promise<void> {
+        return this.userDatasource.verifyUser(userId)
+    }
+
     save(user: UserEntity): Promise<UserEntity> {
         return this.userDatasource.save(user)
     }

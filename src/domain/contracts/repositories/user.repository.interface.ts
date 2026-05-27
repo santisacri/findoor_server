@@ -4,6 +4,8 @@ import { UserEntity } from "../../entities/user.entity";
 
 export interface IUserRepository {
     createUser(user: TRegisterUser, verificationToken: string): Promise<UserEntity>
+    findByVerificationToken(token: string): Promise<UserEntity>
+    verifyUser(userId: string): Promise<void>
     getUserByEmail(email: string): Promise<UserEntity>
     getUserById(id: string): Promise<UserEntity>
     save(user: UserEntity): Promise<UserEntity>

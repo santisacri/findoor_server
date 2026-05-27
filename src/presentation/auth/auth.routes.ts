@@ -17,6 +17,7 @@ export class AuthRoutes {
         router.get('/refresh', authController.refreshToken)
         router.post('/logout', [authMiddleware], authController.logout)
         router.post('/change-password', [authRateLimit, authMiddleware, validateBody(changePasswordSchema)], authController.changePassword)
+        router.get('/verify', [authRateLimit], authController.verifyAccount)
 
         return router
     }

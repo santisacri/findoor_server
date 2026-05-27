@@ -3,6 +3,7 @@ import { LoginUserUseCase } from "../application/use-cases/auth/login-user.use-c
 import { LogoutUseCase } from "../application/use-cases/auth/logout.use-case";
 import { RegisterUserUseCase } from "../application/use-cases/auth/register-user.use-case";
 import { RotateRefreshTokenUseCase } from "../application/use-cases/auth/rotate-refresh-token.use-case";
+import { VerifyAccountUseCase } from "../application/use-cases/auth/verify-account.use-case";
 import { AuthController } from "../presentation/auth/auth.controller";
 import { emailService } from "./email.container";
 import { refreshTokenRepository, userRepository } from "./repositories.container";
@@ -15,12 +16,14 @@ const loginUserUseCase = new LoginUserUseCase(userRepository, refreshTokenReposi
 const rotateRefreshTokenUseCase = new RotateRefreshTokenUseCase(refreshTokenRepository, jwtService)
 const logoutUseCase = new LogoutUseCase(refreshTokenRepository)
 const changePasswordUseCase = new ChangePasswordUseCase(userRepository, hashService)
+const verifyAccountUseCase = new VerifyAccountUseCase(userRepository)
 
 
-export const authController = new AuthController({ 
-    registerUserUseCase, 
-    loginUserUseCase, 
-    rotateRefreshTokenUseCase, 
-    logoutUseCase, 
-    changePasswordUseCase 
+export const authController = new AuthController({
+    registerUserUseCase,
+    loginUserUseCase,
+    rotateRefreshTokenUseCase,
+    logoutUseCase,
+    changePasswordUseCase,
+    verifyAccountUseCase
 })

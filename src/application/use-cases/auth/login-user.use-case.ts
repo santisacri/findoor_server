@@ -25,6 +25,9 @@ export class LoginUserUseCase implements ILoginUserUseCase {
 
     async execute(data: TLoginUser): Promise<{user: Omit<IUserEntityProps, 'password'>, token: string, refreshToken: RefreshTokenEntity}> {
         const user = await this.userRepository.getUserByEmail(data.email)
+
+        if(!user.isVerified) throw CustomError.forbidden('You need to verify your account in order to login')
+
         const isValid = this.hashService.compare(user.password, data.password)
         if (!isValid) throw CustomError.badRequest('Invalid password')
 

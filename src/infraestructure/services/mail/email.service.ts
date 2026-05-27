@@ -14,7 +14,7 @@ export class EmailService implements IEmailService {
 
     async sendVerificationEmail(to: string, token: string): Promise<void> {
         const url = `${envs.FRONTEND_URL}/verify-email?token=${token}`
-        const subject = `Verify your Findoor Account`
+        const subject = `Verify your Findoor account`
         const html = `<p>Click <a href="${url}">here</a> to verify your account.</p>`
 
         await this.mailer.send(to, subject, html)

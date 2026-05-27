@@ -81,4 +81,38 @@ export class UserDatasource implements IUserDatasource {
         }
     }
 
+    async findByVerificationToken(token: string): Promise<UserEntity> {
+        try {
+            const user = await this.prisma.user.findFirstOrThrow({
+                where: {
+                    verificationToken: token,
+                    verificationExpiresAt: { gt: new Date() }
+                }
+            })
+
+            if (!user) throw CustomError.badRequest('Invalid token')
+
+            return this.toEntity(user)
+        } catch (error) {
+            if (error instanceof CustomError) throw error
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
+    async verifyUser(userId: string): Promise<void> {
+        try {
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: {
+                    isVerified: true,
+                    verificationToken: null,
+                    verificationExpiresAt: null
+                }
+            })
+
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
 }

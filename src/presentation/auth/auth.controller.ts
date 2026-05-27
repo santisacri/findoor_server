@@ -6,13 +6,15 @@ import { IRotateRefreshTokenUseCase } from "../../application/use-cases/auth/rot
 import { CustomError } from "../../domain/errors/custom-errors";
 import { ILogoutUseCase } from "../../application/use-cases/auth/logout.use-case";
 import { IChangePasswordUseCase } from "../../application/use-cases/auth/change-password.use-case";
+import { IVerifyAccountUseCase } from "../../application/use-cases/auth/verify-account.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
     loginUserUseCase: ILoginUserUseCase
     rotateRefreshTokenUseCase: IRotateRefreshTokenUseCase
     logoutUseCase: ILogoutUseCase
-    changePasswordUseCase: IChangePasswordUseCase
+    changePasswordUseCase: IChangePasswordUseCase,
+    verifyAccountUseCase: IVerifyAccountUseCase
 }
 
 export class AuthController {
@@ -98,7 +100,18 @@ export class AuthController {
         try {
             const updatedUser = await this.useCases.changePasswordUseCase.execute(data, user)
 
-            res.json({updatedUser})
+            res.json({ updatedUser })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    verifyAccount = async (req: Request, res: Response, next: NextFunction) => {
+        const { token } = req.query
+        try {
+            await this.useCases.verifyAccountUseCase.execute(token as string)
+
+            res.json({ message: 'Account verified successfully' })
         } catch (error) {
             next(error)
         }

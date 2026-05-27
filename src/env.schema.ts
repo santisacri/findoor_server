@@ -11,7 +11,7 @@ const envSchema = z.object({
     CLOUDINARY_CLOUD_NAME: requiredString,
     CLOUDINARY_API_KEY: requiredString,
     CLOUDINARY_API_SECRET: requiredString,
-    FRONTEND_URL: z.string().optional(),
+    FRONTEND_URL: z.string().default('http://localhost:3000'),
     RESEND_API_KEY: requiredString,
     DOMAIN: z.string().optional()
 })
