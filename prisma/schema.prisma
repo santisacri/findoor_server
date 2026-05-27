@@ -33,7 +33,8 @@ model User {
   email         String         @unique()
   password      String
   phone         Int?
-  created_at    DateTime       @default(now())
+  isValidated   Boolean        @default(false) @map("is_validated")
+  createdAt     DateTime       @default(now()) @map("created_at")
   properties    Property[]
   favorites     Favorite[]
   contactLeads  ContactLead[]

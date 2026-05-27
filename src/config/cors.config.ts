@@ -1,4 +1,3 @@
-// config/cors.config.ts
 import cors from 'cors'
 import { envs } from '../env.schema'
 
