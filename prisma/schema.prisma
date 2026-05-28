@@ -37,6 +37,8 @@ model User {
   createdAt             DateTime       @default(now()) @map("created_at")
   verificationToken     String?        @map("verification_token")
   verificationExpiresAt DateTime?      @map("verification_expires_at")
+  resetToken            String?        @map("reset_token")
+  resetTokenExpiresAt   DateTime?      @map("reset_token_expires_at")
   properties            Property[]
   favorites             Favorite[]
   contactLeads          ContactLead[]
