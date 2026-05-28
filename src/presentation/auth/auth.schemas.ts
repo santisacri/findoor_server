@@ -23,3 +23,8 @@ export const changePasswordSchema = z.object({
 })
 
 export type TChangePassword = z.infer<typeof changePasswordSchema>
+
+export const forgotPasswordSchema = z.object({
+    email: z.email()
+})
+

@@ -1,4 +1,5 @@
 import { ChangePasswordUseCase } from "../application/use-cases/auth/change-password.use-case";
+import { ForgotPasswordUseCase } from "../application/use-cases/auth/forgot-password.use-case";
 import { LoginUserUseCase } from "../application/use-cases/auth/login-user.use-case";
 import { LogoutUseCase } from "../application/use-cases/auth/logout.use-case";
 import { RegisterUserUseCase } from "../application/use-cases/auth/register-user.use-case";
@@ -17,6 +18,7 @@ const rotateRefreshTokenUseCase = new RotateRefreshTokenUseCase(refreshTokenRepo
 const logoutUseCase = new LogoutUseCase(refreshTokenRepository)
 const changePasswordUseCase = new ChangePasswordUseCase(userRepository, hashService)
 const verifyAccountUseCase = new VerifyAccountUseCase(userRepository)
+const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, emailService)
 
 
 export const authController = new AuthController({
@@ -25,5 +27,6 @@ export const authController = new AuthController({
     rotateRefreshTokenUseCase,
     logoutUseCase,
     changePasswordUseCase,
-    verifyAccountUseCase
+    verifyAccountUseCase,
+    forgotPasswordUseCase
 })

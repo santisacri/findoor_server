@@ -10,6 +10,14 @@ export class UserRepository implements IUserRepository {
         private readonly userDatasource: IUserDatasource
     ) { }
 
+    assignResetToken(userId: string, resetToken: string): Promise<UserEntity> {
+        return this.userDatasource.assignResetToken(userId, resetToken)
+    }
+
+    findByResetToken(resetToken: string): Promise<UserEntity> {
+        return this.userDatasource.findByResetToken(resetToken)
+    }
+
     findByVerificationToken(token: string): Promise<UserEntity> {
         return this.userDatasource.findByVerificationToken(token)
     }
@@ -26,7 +34,7 @@ export class UserRepository implements IUserRepository {
         return this.userDatasource.getUserById(id)
     }
 
-    getUserByEmail(email: string): Promise<UserEntity> {
+    getUserByEmail(email: string): Promise<UserEntity | null> {
         return this.userDatasource.getUserByEmail(email)
 
     }

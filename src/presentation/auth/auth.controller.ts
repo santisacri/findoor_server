@@ -7,6 +7,7 @@ import { CustomError } from "../../domain/errors/custom-errors";
 import { ILogoutUseCase } from "../../application/use-cases/auth/logout.use-case";
 import { IChangePasswordUseCase } from "../../application/use-cases/auth/change-password.use-case";
 import { IVerifyAccountUseCase } from "../../application/use-cases/auth/verify-account.use-case";
+import { IForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
@@ -14,7 +15,8 @@ interface UseCases {
     rotateRefreshTokenUseCase: IRotateRefreshTokenUseCase
     logoutUseCase: ILogoutUseCase
     changePasswordUseCase: IChangePasswordUseCase,
-    verifyAccountUseCase: IVerifyAccountUseCase
+    verifyAccountUseCase: IVerifyAccountUseCase,
+    forgotPasswordUseCase: IForgotPasswordUseCase
 }
 
 export class AuthController {
@@ -95,6 +97,29 @@ export class AuthController {
     }
 
     changePassword = async (req: Request, res: Response, next: NextFunction) => {
+        const data = req.body
+        const user = req.user!
+        try {
+            const updatedUser = await this.useCases.changePasswordUseCase.execute(data, user)
+
+            res.json({ updatedUser })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+        const { email } = req.body
+        try {
+            await this.useCases.forgotPasswordUseCase.execute(email)
+
+            res.json({ message: 'If your email exists, you will recieve a link to reset your password' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    resetPassword = async (req: Request, res: Response, next: NextFunction) => {
         const data = req.body
         const user = req.user!
         try {

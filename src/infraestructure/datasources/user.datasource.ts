@@ -14,7 +14,7 @@ export class UserDatasource implements IUserDatasource {
 
 
     toEntity(prismaUser: User): UserEntity {
-        const { verificationExpiresAt, verificationToken, ...user } = prismaUser
+        const { verificationExpiresAt, verificationToken, resetToken, resetTokenExpiresAt, ...user } = prismaUser
         return UserEntity.fromObject({
             ...user,
         })
@@ -57,11 +57,13 @@ export class UserDatasource implements IUserDatasource {
         }
     }
 
-    async getUserByEmail(email: string): Promise<UserEntity> {
+    async getUserByEmail(email: string): Promise<UserEntity | null> {
         try {
-            const user = await this.prisma.user.findUniqueOrThrow({
+            const user = await this.prisma.user.findUnique({
                 where: { email }
             })
+
+            if (!user) return null
 
             return this.toEntity(user)
         } catch (error) {
@@ -113,6 +115,25 @@ export class UserDatasource implements IUserDatasource {
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
+    }
+
+    async assignResetToken(userId: string, resetToken: string): Promise<UserEntity> {
+        try {
+            const resetTokenExpiresAt = new Date(Date.now() + 1000 * 60 * 60 * 1)
+            const user = await this.prisma.user.update({
+                where: { id: userId },
+                data: { resetToken, resetTokenExpiresAt }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+
+    }
+
+    async findByResetToken(resetToken: string): Promise<UserEntity> {
+        throw new Error("Method not implemented.");
     }
 
 }

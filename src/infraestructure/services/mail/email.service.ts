@@ -1,4 +1,3 @@
-
 import { IEmailService } from "../../../domain/contracts/services/email.service.interface";
 import { IMailer } from "../../../domain/contracts/services/mailer.interface";
 import { envs } from "../../../env.schema";

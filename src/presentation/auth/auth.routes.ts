@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authController } from "../../container/auth.container";
 import validateBody from "../middlewares/validate-body.middleware";
-import { changePasswordSchema, loginUserSchema, registerUserSchema } from "./auth.schemas";
+import { changePasswordSchema, forgotPasswordSchema, loginUserSchema, registerUserSchema } from "./auth.schemas";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { authRateLimit } from "../middlewares/rate-limit.middleware";
 
@@ -17,6 +17,8 @@ export class AuthRoutes {
         router.get('/refresh', authController.refreshToken)
         router.post('/logout', [authMiddleware], authController.logout)
         router.post('/change-password', [authRateLimit, authMiddleware, validateBody(changePasswordSchema)], authController.changePassword)
+        router.post('/forgot-password', [authRateLimit, validateBody(forgotPasswordSchema)], authController.forgotPassword)
+        router.post('/reset-password', [authRateLimit, authMiddleware, validateBody(changePasswordSchema)], authController.resetPassword)
         router.get('/verify', [authRateLimit], authController.verifyAccount)
 
         return router
