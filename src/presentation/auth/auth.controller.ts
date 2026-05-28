@@ -115,7 +115,7 @@ export class AuthController {
         try {
             await this.useCases.forgotPasswordUseCase.execute(email)
 
-            res.json({ message: 'If your email exists, you will recieve a link to reset your password' })
+            res.json({ message: 'If your email exists, you will receive a link to reset your password' })
         } catch (error) {
             next(error)
         }

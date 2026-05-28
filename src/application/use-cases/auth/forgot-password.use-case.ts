@@ -20,7 +20,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
         const token = TokenService.generate()
 
         await this.userRepo.assignResetToken(user.id, token)
-        await this.emailService.sendPasswordResetEmail(user.email, token)
+        await this.emailService.sendPasswordResetEmail(user.email, token, user.name)
     }
 
 }

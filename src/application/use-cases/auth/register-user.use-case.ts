@@ -6,7 +6,7 @@ import { TokenService } from "../../../infraestructure/services/token.service";
 import { TRegisterUser } from "../../../presentation/auth/auth.schemas";
 
 export interface IRegisterUserUseCase {
-    execute(user: TRegisterUser): Promise<{ user: Omit<IUserEntityProps, 'password'> }>
+    execute(user: TRegisterUser): Promise<{ message: string }>
 }
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
@@ -17,13 +17,13 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
         private readonly emailService: IEmailService
     ) { }
 
-    async execute(user: TRegisterUser): Promise<{ user: Omit<IUserEntityProps, 'password'> }> {
+    async execute(user: TRegisterUser): Promise<{ message: string }> {
         const hash = this.hashService.hash(user.password)
         const token = TokenService.generate()
 
         const newUser = await this.userRepository.createUser({ ...user, password: hash, }, token)
 
-        await this.emailService.sendVerificationEmail(newUser.email, token)
-        return { user: newUser.toJson }
+        await this.emailService.sendVerificationEmail(newUser.email, token, newUser.name)
+        return { message: 'Check your email to verify your account' }
     }
 }
