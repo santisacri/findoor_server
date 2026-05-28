@@ -7,6 +7,7 @@ export interface IUserRepository {
     findByVerificationToken(token: string): Promise<UserEntity>
     assignResetToken(userId: string, resetToken: string): Promise<UserEntity>
     findByResetToken(resetToken: string): Promise<UserEntity>
+    resetPassword(newPassword: string, userId: string): Promise<UserEntity>
     verifyUser(userId: string): Promise<void>
     getUserByEmail(email: string): Promise<UserEntity | null>
     getUserById(id: string): Promise<UserEntity>

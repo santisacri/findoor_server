@@ -8,6 +8,7 @@ import { ILogoutUseCase } from "../../application/use-cases/auth/logout.use-case
 import { IChangePasswordUseCase } from "../../application/use-cases/auth/change-password.use-case";
 import { IVerifyAccountUseCase } from "../../application/use-cases/auth/verify-account.use-case";
 import { IForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.use-case";
+import { IResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
@@ -16,7 +17,8 @@ interface UseCases {
     logoutUseCase: ILogoutUseCase
     changePasswordUseCase: IChangePasswordUseCase,
     verifyAccountUseCase: IVerifyAccountUseCase,
-    forgotPasswordUseCase: IForgotPasswordUseCase
+    forgotPasswordUseCase: IForgotPasswordUseCase,
+    resetPasswordUseCase: IResetPasswordUseCase
 }
 
 export class AuthController {
@@ -120,12 +122,11 @@ export class AuthController {
     }
 
     resetPassword = async (req: Request, res: Response, next: NextFunction) => {
-        const data = req.body
-        const user = req.user!
+        const { token, newPassword } = req.body
         try {
-            const updatedUser = await this.useCases.changePasswordUseCase.execute(data, user)
+            await this.useCases.resetPasswordUseCase.execute(newPassword, token)
 
-            res.json({ updatedUser })
+            res.json({ message: 'Password updated successfully' })
         } catch (error) {
             next(error)
         }

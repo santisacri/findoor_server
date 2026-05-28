@@ -133,7 +133,35 @@ export class UserDatasource implements IUserDatasource {
     }
 
     async findByResetToken(resetToken: string): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+        try {
+            const user = await this.prisma.user.findFirstOrThrow({
+                where: {
+                    resetToken,
+                    resetTokenExpiresAt: { gt: new Date() }
+                }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
+    async resetPassword(newPassword: string, userId: string): Promise<UserEntity> {
+        try {
+            const user = await this.prisma.user.update({
+                where: { id: userId, },
+                data: {
+                    password: newPassword,
+                    resetToken: null,
+                    resetTokenExpiresAt: null
+                }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
     }
 
 }
