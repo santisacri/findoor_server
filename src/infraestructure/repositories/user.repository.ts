@@ -10,6 +10,10 @@ export class UserRepository implements IUserRepository {
         private readonly userDatasource: IUserDatasource
     ) { }
 
+    deleteAccount(userId: string): Promise<UserEntity> {
+        return this.userDatasource.deleteAccount(userId)
+    }
+
     resetPassword(newPassword: string, userId: string): Promise<UserEntity> {
         return this.userDatasource.resetPassword(newPassword, userId)
     }

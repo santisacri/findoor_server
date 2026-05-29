@@ -37,4 +37,8 @@ export const resetPasswordSchema = z.object({
 
 export type TResetPassword = z.infer<typeof resetPasswordSchema>
 
+export const deleteAccountSchema = z.object({
+    password: passwordValidation
+})
+
 

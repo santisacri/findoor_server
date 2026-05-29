@@ -24,7 +24,7 @@ export class PropertyRoutes {
         router.patch('/leads/:leadId/read', [authMiddleware, ownerMiddleware], leadController.markAsRead)
 
         // routes with parameters
-        router.get('/:propertyId', [authMiddleware], propertyController.getPropertyById)
+        router.get('/:propertyId', [], propertyController.getPropertyById)
         router.put('/:propertyId', [authMiddleware, validateBody(updatePropertySchema)], propertyController.updateProperty)
         router.patch('/:propertyId', [authMiddleware, validateBody(toggleStatusSchema)], propertyController.toggleStatus)
         router.delete('/:propertyId', [authMiddleware], propertyController.deleteProperty)

@@ -164,4 +164,16 @@ export class UserDatasource implements IUserDatasource {
         }
     }
 
+    async deleteAccount(userId: string): Promise<UserEntity> {
+        try {
+            const user = await this.prisma.user.delete({
+                where: { id: userId }
+            })
+
+            return this.toEntity(user)
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
 }

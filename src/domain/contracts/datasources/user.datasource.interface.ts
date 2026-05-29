@@ -11,5 +11,6 @@ export interface IUserDatasource {
     verifyUser(userId: string): Promise<void>
     getUserByEmail(email: string): Promise<UserEntity | null>
     getUserById(id: string): Promise<UserEntity>
+    deleteAccount(userId: string): Promise<UserEntity>
     save(user: UserEntity): Promise<UserEntity>
 }

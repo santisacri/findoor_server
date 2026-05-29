@@ -9,6 +9,7 @@ import { IChangePasswordUseCase } from "../../application/use-cases/auth/change-
 import { IVerifyAccountUseCase } from "../../application/use-cases/auth/verify-account.use-case";
 import { IForgotPasswordUseCase } from "../../application/use-cases/auth/forgot-password.use-case";
 import { IResetPasswordUseCase } from "../../application/use-cases/auth/reset-password.use-case";
+import { IDeleteAccountUseCase } from "../../application/use-cases/auth/delete-account.use-case";
 
 interface UseCases {
     registerUserUseCase: IRegisterUserUseCase
@@ -18,7 +19,8 @@ interface UseCases {
     changePasswordUseCase: IChangePasswordUseCase,
     verifyAccountUseCase: IVerifyAccountUseCase,
     forgotPasswordUseCase: IForgotPasswordUseCase,
-    resetPasswordUseCase: IResetPasswordUseCase
+    resetPasswordUseCase: IResetPasswordUseCase,
+    deleteAccountUseCase: IDeleteAccountUseCase
 }
 
 export class AuthController {
@@ -138,6 +140,18 @@ export class AuthController {
             await this.useCases.verifyAccountUseCase.execute(token as string)
 
             res.json({ message: 'Account verified successfully' })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    deleteAccount = async (req: Request, res: Response, next: NextFunction) => {
+        const { password } = req.body
+        const user = req.user!
+        try {
+            await this.useCases.deleteAccountUseCase.execute(user, password)
+
+            res.json({ message: 'Account deleted successfully' })
         } catch (error) {
             next(error)
         }
