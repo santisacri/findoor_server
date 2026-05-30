@@ -51,11 +51,11 @@ export const verifyAccountHTML = (username: string, url: string) => {
 
             <tr>
                 <td align="center"
-                    style="background-color: #1a1a2e; padding: 36px 40px 28px;">
+                    style="background-color: #000000; padding: 36px 40px 28px;">
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                     <td>
-                        <div style="width:52px; height:52px; background-color:#4f46e5;
+                        <div style="width:52px; height:52px; background-color:#1D9E75;
                                     border-radius:50%; margin: 0 auto 16px;
                                     display:table; text-align:center; line-height:52px;">
                         <span style="color:#ffffff; font-size:26px; vertical-align:middle;">✓</span>
@@ -97,7 +97,7 @@ export const verifyAccountHTML = (username: string, url: string) => {
                         style="margin: 0 auto 32px;">
                     <tr>
                     <td align="center"
-                        style="background-color: #4f46e5; border-radius: 8px;">
+                        style="background-color: #1D9E75; border-radius: 8px;">
                         <a href="${url}"
                         target="_blank"
                         style="display: inline-block; padding: 15px 40px;
@@ -127,7 +127,7 @@ export const verifyAccountHTML = (username: string, url: string) => {
                 </p>
                 <p style="margin: 6px 0 0; font-size: 13px; word-break: break-all;">
                     <a href="${url}"
-                    style="color: #4f46e5; text-decoration: underline;">
+                    style="color: #1D9E75; text-decoration: underline;">
                     ${url}
                     </a>
                 </p>
@@ -141,7 +141,7 @@ export const verifyAccountHTML = (username: string, url: string) => {
                 <p style="margin: 0; font-size: 12px; color: #aab0bb;
                             text-align: center; line-height: 1.6;">
                     If you didn't create a Findoor account, you can safely ignore this email.<br/>
-                    &copy; 2025 Findoor &mdash; All rights reserved.
+                    &copy; 2026 Findoor &mdash; All rights reserved.
                 </p>
                 </td>
             </tr>
@@ -210,11 +210,11 @@ export const resetPasswordHTML = (username: string, url: string) => {
 
             <tr>
                 <td align="center"
-                    style="background-color: #1a1a2e; padding: 36px 40px 28px;">
+                    style="background-color: #000000; padding: 36px 40px 28px;">
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                     <td>
-                        <div style="width:52px; height:52px; background-color:#e05a2b;
+                        <div style="width:52px; height:52px; background-color:#1D9E75;
                                     border-radius:50%; margin: 0 auto 16px;
                                     display:table; text-align:center; line-height:52px;">
                         <span style="color:#ffffff; font-size:26px; vertical-align:middle;">🔐</span>
@@ -256,7 +256,7 @@ export const resetPasswordHTML = (username: string, url: string) => {
                         style="margin: 0 auto 32px;">
                     <tr>
                     <td align="center"
-                        style="background-color: #e05a2b; border-radius: 8px;">
+                        style="background-color: #1D9E75; border-radius: 8px;">
                         <a href="${url}"
                         target="_blank"
                         style="display: inline-block; padding: 15px 40px;
@@ -286,7 +286,7 @@ export const resetPasswordHTML = (username: string, url: string) => {
                 </p>
                 <p style="margin: 6px 0 0; font-size: 13px; word-break: break-all;">
                     <a href="${url}"
-                    style="color: #e05a2b; text-decoration: underline;">
+                    style="color: #1D9E75; text-decoration: underline;">
                     ${url}
                     </a>
                 </p>
@@ -301,7 +301,7 @@ export const resetPasswordHTML = (username: string, url: string) => {
                             text-align: center; line-height: 1.6;">
                     If you didn't request a password reset, you can safely ignore this email.
                     Your password will not be changed.<br/>
-                    &copy; 2025 Findoor &mdash; All rights reserved.
+                    &copy; 2026 Findoor &mdash; All rights reserved.
                 </p>
                 </td>
             </tr>
