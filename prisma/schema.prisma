@@ -32,7 +32,7 @@ model User {
   name                  String
   email                 String         @unique()
   password              String
-  phone                 Int?
+  phone                 String?
   isVerified            Boolean        @default(false) @map("is_verified")
   createdAt             DateTime       @default(now()) @map("created_at")
   verificationToken     String?        @map("verification_token")

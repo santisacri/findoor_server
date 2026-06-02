@@ -13,7 +13,7 @@ export class EmailService implements IEmailService {
 
 
     async sendVerificationEmail(to: string, token: string, name: string): Promise<void> {
-        const url = `${envs.FRONTEND_URL}/verify-email?token=${token}`
+        const url = `${envs.FRONTEND_URL}/auth/verify-email?token=${token}`
         const subject = `Verify your Findoor account`
         const html = verifyAccountHTML(name, url)
 
@@ -21,7 +21,7 @@ export class EmailService implements IEmailService {
     }
 
     async sendPasswordResetEmail(to: string, token: string, name: string): Promise<void> {
-        const url = `${envs.FRONTEND_URL}/reset-password?token=${token}`
+        const url = `${envs.FRONTEND_URL}/auth/reset-password?token=${token}`
         const subject = `Password reset`
         const html = resetPasswordHTML(name, url)
 

@@ -1,12 +1,12 @@
 import z from "zod";
 
-const passwordValidation = z.string().min(8).max(16)
+const passwordValidation = z.string().min(8).max(24).regex(/[0-9]/).regex(/[a-z]/).regex(/[A-Z]/)
 
 export const registerUserSchema = z.object({
-    name: z.string().min(3).max(25),
+    name: z.string().min(3).max(24),
     password: passwordValidation,
     email: z.email(),
-    phone: z.number().nullish()
+    phone: z.string().nullish()
 })
 
 export type TRegisterUser = z.infer<typeof registerUserSchema>
