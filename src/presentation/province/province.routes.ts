@@ -10,17 +10,29 @@ export class ProvinceRoutes {
                 const { provinceId } = req.params
                 const { query } = req.query as { query?: string }
 
-                const cities = await prisma.city.findMany({
-                    where: {
-                        provinceId: parseInt(provinceId as string),
-                        ...(query && {
-                            name: { contains: query, mode: 'insensitive' }
-                        })
-                    },
-                    orderBy: { name: 'asc' },
-                    take: 5,
-                    select: { id: true, name: true }
-                })
+                const [startsWith, contains] = await Promise.all([
+                    prisma.city.findMany({
+                        where: {
+                            provinceId: parseInt(provinceId as string),
+                            name: { startsWith: query, mode: 'insensitive' }
+                        },
+                        orderBy: { name: 'asc' },
+                        take: 5,
+                        select: { id: true, name: true }
+                    }),
+                    prisma.city.findMany({
+                        where: {
+                            provinceId: parseInt(provinceId as string),
+                            name: { contains: query, mode: 'insensitive' },
+                            NOT: { name: { startsWith: query, mode: 'insensitive' } }
+                        },
+                        orderBy: { name: 'asc' },
+                        take: 5,
+                        select: { id: true, name: true }
+                    })
+                ])
+
+                const cities = [...startsWith, ...contains].slice(0, 5)
 
                 res.json({ cities })
             } catch (error) {
