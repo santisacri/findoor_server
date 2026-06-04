@@ -76,13 +76,15 @@ model Property {
 model Address {
   id           String   @id @default(uuid(7))
   propertyId   String   @unique @map("property_id")
-  province     String
-  city         String
+  provinceId   Int      @map("province_id")
+  cityId       Int      @map("city_id")
   neighborhood String?
   street       String?
   streetNumber String?  @map("street_number")
   lat          Float?
-  lon          Float?
+  lng          Float?
+  province     Province @relation(fields: [provinceId], references: [id])
+  city         City     @relation(fields: [cityId], references: [id])
   property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@map("addresses")
@@ -136,4 +138,25 @@ model RefreshToken {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
+}
+
+model Province {
+  id        Int       @id
+  name      String
+  cities    City[]
+  addresses Address[]
+
+  @@map("provinces")
+}
+
+model City {
+  id         Int       @id
+  name       String
+  provinceId Int       @map("province_id")
+  province   Province  @relation(fields: [provinceId], references: [id])
+  addresses  Address[]
+
+  @@index([provinceId])
+  @@index([name])
+  @@map("cities")
 }

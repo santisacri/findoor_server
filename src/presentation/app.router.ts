@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthRoutes } from "./auth/auth.routes";
 import { PropertyRoutes } from "./property/property.routes";
+import { ProvinceRoutes } from "./province/province.routes";
 
 
 export class AppRouter {
@@ -9,6 +10,9 @@ export class AppRouter {
 
         router.use('/api/auth', AuthRoutes.routes)
         router.use('/api/property', PropertyRoutes.routes)
+
+        // endpoint only for frontend autocomplete, no Clean Arch needed at all
+        router.use('/api/province', ProvinceRoutes.routes)
 
         return router
     }

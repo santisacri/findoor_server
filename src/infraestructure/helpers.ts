@@ -2,7 +2,7 @@ import { TGetProperties } from "../presentation/property/property.schemas";
 
 
 export const createWhereClause = (filters: TGetProperties) => {
-    const { city, minPrice,
+    const { cityId, minPrice,
         maxPrice, operationType, propertyType,
         bedrooms, bathrooms, parkingSpots,
         minCoveredArea, maxCoveredArea, maxTotalArea,
@@ -15,7 +15,7 @@ export const createWhereClause = (filters: TGetProperties) => {
         ...(bedrooms && { bedrooms }),
         ...(bathrooms && { bathrooms }),
         ...(parkingSpots && { parkingSpots }),
-        ...(city && { address: { city: { contains: city, mode: 'insensitive' as const } } }),
+        ...(cityId && { address: { cityId } }),
         ...((minPrice || maxPrice) && {
             price: {
                 ...(minPrice && { gte: minPrice }),

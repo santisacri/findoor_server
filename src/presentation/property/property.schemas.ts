@@ -4,8 +4,8 @@ import { Province } from "../../domain/entities/address.entity";
 
 
 const addressSchema = z.object({
-  province: z.enum(Province),
-  city: z.string().min(4).max(30).trim(),
+  provinceId: z.number(),
+  cityId: z.number(),
   neighborhood: z.string().min(4).max(20).trim(),
   street: z.string().min(4).max(25).trim().nullish(),
   streetNumber: z.string().max(12).trim().nullish(),
@@ -41,7 +41,7 @@ export type TUpdateProperty = z.infer<typeof updatePropertySchema>
 
 export const getPropertiesSchema = z.object({
   page: z.string().transform(Number).default(1),
-  city: z.string().optional(),
+  cityId: z.string().transform(Number).optional(),
   minPrice: z.string().transform(Number).optional(),
   maxPrice: z.string().transform(Number).optional(),
   operationType: z.enum(OperationType).optional(),

@@ -7,7 +7,7 @@ export interface IUserEntityProps {
     email: string
     createdAt: Date
     isVerified: boolean
-    phone?: number | null
+    phone?: string | null
 }
 
 export class UserEntity {
@@ -19,7 +19,7 @@ export class UserEntity {
         public email: string,
         public createdAt: Date,
         public isVerified: boolean,
-        public phone?: number | null
+        public phone?: string | null
     ) { }
 
     static fromObject(props: IUserEntityProps): UserEntity {

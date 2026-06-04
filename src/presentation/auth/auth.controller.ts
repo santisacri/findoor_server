@@ -47,7 +47,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: envs.IN_PRODUCTION,
                 sameSite: 'strict',
-                path: '/auth/refresh',
+                path: 'api/auth/refresh',
                 expires: RT.expiresAt
             })
 
@@ -69,7 +69,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: envs.IN_PRODUCTION,
                 sameSite: 'strict',
-                path: '/auth/refresh',
+                path: 'api/auth/refresh',
                 expires: RT.expiresAt
             })
 
