@@ -33,9 +33,9 @@ interface PropertyEntityProps {
     parkingSpots: number
     createdAt: Date
     updatedAt: Date
-    isActive?: boolean
+    isActive: boolean
     address?: AddressEntity
-    photos?: PhotoEntity[]
+    photos: PhotoEntity[]
 }
 
 export class PropertyEntity {
@@ -55,8 +55,8 @@ export class PropertyEntity {
     public parkingSpots: number
     public createdAt: Date
     public updatedAt: Date
-    public isActive?: boolean
-    public photos?: PhotoEntity[]
+    public isActive: boolean
+    public photos: PhotoEntity[]
     public address?: AddressEntity
 
 
@@ -83,12 +83,16 @@ export class PropertyEntity {
 
 
     static fromObject(props: PropertyEntityProps) {
-        const { id, ownerId } = props
+        const { id, ownerId, photos = [] } = props
 
         if (!id) throw CustomError.badRequest('Missing id')
         if (!ownerId) throw CustomError.badRequest('Missing ownerId')
 
 
         return new PropertyEntity(props)
+    }
+
+    get photoUrls(): string[] {
+        return this.photos?.map(p => p.url) ?? []
     }
 }

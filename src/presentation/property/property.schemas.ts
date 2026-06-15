@@ -24,7 +24,7 @@ export const createPropertySchema = z.object({
     coveredAreaM2: z.number().positive().nullish(),
     bedrooms: z.number().positive(),
     bathrooms: z.number().positive(),
-    parkingSpots: z.number().positive(),
+    parkingSpots: z.number(),
     operationType: z.enum(OperationType),
     propertyType: z.enum(PropertyType),
     address: addressSchema

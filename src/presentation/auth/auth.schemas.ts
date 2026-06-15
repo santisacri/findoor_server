@@ -3,7 +3,9 @@ import z from "zod";
 const passwordValidation = z.string().min(8).max(24).regex(/[0-9]/).regex(/[a-z]/).regex(/[A-Z]/)
 
 export const registerUserSchema = z.object({
-    name: z.string().min(3).max(24),
+    name: z.string().min(3).max(24).trim().regex(/^[A-Za-z]+(?: [A-Za-z]+)?$/, {
+        message: 'Name must contain one or two words',
+    }),
     password: passwordValidation,
     email: z.email(),
     phone: z.string().nullish()

@@ -23,7 +23,7 @@ export class PhotoController {
                 req.user!.id,
                 files
             )
-            res.json(photos)
+            res.json({ photos: photos.map( photo => photo.url)})
         } catch (error) {
             next(error)
         }

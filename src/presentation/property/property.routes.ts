@@ -18,7 +18,7 @@ export class PropertyRoutes {
         // static routes
         router.post('/', [authMiddleware, validateBody(createPropertySchema)], propertyController.createProperty)
         router.get('/', [], propertyController.getAllProperties)
-        router.get('/me', [authMiddleware, ownerMiddleware], propertyController.getOwnerProperties)
+        router.get('/me', [authMiddleware], propertyController.getOwnerProperties)
         router.get('/favorites', [authMiddleware], favoriteController.getFavorites)
         router.get('/leads', [authMiddleware, ownerMiddleware], leadController.getLeads)
         router.patch('/leads/:leadId/read', [authMiddleware, ownerMiddleware], leadController.markAsRead)
