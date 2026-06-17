@@ -4,7 +4,7 @@ import { ContactLeadEntity } from "../../../domain/entities/contact-lead.entity"
 import { CustomError } from "../../../domain/errors/custom-errors";
 
 export interface ICreateLeadUseCase {
-    execute(propertyId: string, senderId: string, message: string): Promise<ContactLeadEntity>
+    execute(propertyId: string, senderId: string, message: string): Promise<{ message: string }>
 }
 
 export class CreateLeadUseCase implements ICreateLeadUseCase {
@@ -14,15 +14,18 @@ export class CreateLeadUseCase implements ICreateLeadUseCase {
         private readonly propertyRepo: IPropertyRepository
     ) { }
 
-    async execute(propertyId: string, senderId: string, message: string): Promise<ContactLeadEntity> {
+    async execute(propertyId: string, senderId: string, message: string): Promise<{ message: string }> {
         const property = await this.propertyRepo.getProperty(propertyId)
 
-        if(!property.isActive) throw CustomError.badRequest('Property is not active')
-        if(property.ownerId === senderId) throw CustomError.forbidden('Cannot create a lead to your own property')
+        if (!property.isActive) throw CustomError.badRequest('Property is not active')
+        if (property.ownerId === senderId) throw CustomError.forbidden('Cannot create a lead to your own property')
+
+        const leadExists = await this.contactLeadRepo.getLeadByPropertyAndSender(propertyId, senderId)
+        if (leadExists) throw CustomError.badRequest('You already contacted the property owner')
 
         const lead = await this.contactLeadRepo.createLead(propertyId, senderId, message)
 
-        return lead
+        return { message: 'Message sent' }
     }
 
 }

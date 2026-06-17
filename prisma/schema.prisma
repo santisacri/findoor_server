@@ -112,6 +112,7 @@ model ContactLead {
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
+  @@unique([propertyId, senderId])
   @@map("contact_leads")
 }
 

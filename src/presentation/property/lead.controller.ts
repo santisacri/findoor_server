@@ -17,13 +17,13 @@ export class LeadController {
 
 
     createLead = async (req: Request, res: Response, next: NextFunction) => {
-        const { message } = req.body
+        const { message: leadMessage } = req.body
         const { id } = req.user!
         const { propertyId } = req.params
         try {
-            const lead = await this.useCases.createLeadUseCase.execute(propertyId as string, id, message)
+            const { message } = await this.useCases.createLeadUseCase.execute(propertyId as string, id, leadMessage)
 
-            res.status(201).json({ lead })
+            res.status(201).json({ message })
         } catch (error) {
             next(error)
         }

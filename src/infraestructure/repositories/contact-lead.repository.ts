@@ -9,6 +9,11 @@ export class ContactLeadRepository implements IContactLeadRepository {
         private readonly contactLeadDatasource: IContactLeadDatasource
     ) { }
 
+
+    getLeadByPropertyAndSender(propertyId: string, senderId: string): Promise<ContactLeadEntity | null> {
+        return this.contactLeadDatasource.getLeadByPropertyAndSender(propertyId, senderId)
+    }
+
     findById(leadId: string): Promise<ContactLeadEntity> {
         return this.contactLeadDatasource.findById(leadId)
     }

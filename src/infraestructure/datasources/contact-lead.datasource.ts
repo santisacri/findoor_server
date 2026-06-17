@@ -35,6 +35,18 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
         }
     }
 
+    async getLeadByPropertyAndSender(propertyId: string, senderId: string): Promise<ContactLeadEntity | null> {
+        try {
+            const lead = await this.prisma.contactLead.findFirst({
+                where: {propertyId, senderId}
+            })
+
+            return lead
+        } catch (error) {
+            throw CustomError.fromPrisma(error)
+        }
+    }
+
     async findById(leadId: string): Promise<ContactLeadEntity> {
         try {
             const lead = await this.prisma.contactLead.findUniqueOrThrow({
