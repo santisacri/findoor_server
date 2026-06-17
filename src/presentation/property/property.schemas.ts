@@ -61,7 +61,7 @@ export const toggleStatusSchema = z.object({
 })
 
 export const sendMessageSchema = z.object({
-    message: z.string().min(10).max(80)
+    message: z.string().min(10).max(100)
 })
 
 export const getAllPropertiesSchema = z.object({

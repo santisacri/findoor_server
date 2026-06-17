@@ -77,12 +77,13 @@ export class PropertyController {
 
     getPropertyById = async (req: Request, res: Response, next: NextFunction) => {
         const propertyId = req.params.propertyId as string
-        const { id } = req.user!
 
         try {
-            const property = await this.useCases.getPropertyUseCase.execute(propertyId, id)
+            const property = await this.useCases.getPropertyUseCase.execute(propertyId)
 
-            res.json({ property })
+            const propertyWithoutPhotoEntity = this.propertiesWithoutPhotoEntity([property])[0]
+
+            res.json({ property: propertyWithoutPhotoEntity })
         } catch (error) {
             next(error)
         }
@@ -95,7 +96,9 @@ export class PropertyController {
         try {
             const property = await this.useCases.updatePropertyUseCase.execute(req.body, propertyId, id)
 
-            res.json({ property })
+            const propertyWithoutPhotoEntity = this.propertiesWithoutPhotoEntity([property])[0]
+
+            res.json({ property: propertyWithoutPhotoEntity })
         } catch (error) {
             next(error)
         }
@@ -107,9 +110,9 @@ export class PropertyController {
         const { isActive } = req.body
 
         try {
-            const property = await this.useCases.toggleStatusUseCase.execute(isActive, propertyId, id)
+            await this.useCases.toggleStatusUseCase.execute(isActive, propertyId, id)
 
-            res.json({ property })
+            res.json({ message: 'status changed successfully' })
         } catch (error) {
             next(error)
         }
@@ -122,7 +125,7 @@ export class PropertyController {
         try {
             await this.useCases.deletePropertyUseCase.execute(propertyId, id)
 
-            res.json({ message: 'Property deleted Succesfully' })
+            res.json({ message: 'Property deleted Successfully' })
         } catch (error) {
             next(error)
         }
