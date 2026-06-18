@@ -17,7 +17,7 @@ export type TAddress = z.infer<typeof addressSchema>
 
 export const createPropertySchema = z.object({
     title: z.string().min(10).max(50).trim(),
-    description: z.string().min(10).max(250).trim(),
+    description: z.string().min(10).max(500).trim(),
     price: z.coerce.number().positive(),
     currency: z.enum(Currency),
     totalAreaM2: z.number().positive(),
