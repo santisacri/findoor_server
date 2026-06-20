@@ -21,9 +21,9 @@ export class LeadController {
         const { id } = req.user!
         const { propertyId } = req.params
         try {
-            const { message } = await this.useCases.createLeadUseCase.execute(propertyId as string, id, leadMessage)
+            await this.useCases.createLeadUseCase.execute(propertyId as string, id, leadMessage)
 
-            res.status(201).json({ message })
+            res.status(201).json({ message: 'Message sent' })
         } catch (error) {
             next(error)
         }
@@ -44,9 +44,9 @@ export class LeadController {
         const { id } = req.user!
         const { leadId } = req.params
         try {
-            const lead = await this.useCases.markAsReadUseCase.execute(leadId as string, id)
+            await this.useCases.markAsReadUseCase.execute(leadId as string, id)
 
-            res.json({ lead })
+            res.sendStatus(204)
         } catch (error) {
             next(error)
         }

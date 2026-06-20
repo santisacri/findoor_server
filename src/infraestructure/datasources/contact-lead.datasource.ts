@@ -14,10 +14,12 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
     async createLead(propertyId: string, senderId: string, message: string): Promise<ContactLeadEntity> {
         try {
             const newLead = await this.prisma.contactLead.create({
-                data: { propertyId, senderId, message }
+                data: { propertyId, senderId, message },
+                include: { sender: { select: { name: true } } },
+
             })
 
-            return ContactLeadEntity.fromObject(newLead)
+            return ContactLeadEntity.fromObject({ ...newLead, senderName: newLead.sender.name })
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
@@ -26,10 +28,12 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
     async getLeadsByOwner(ownerId: string): Promise<ContactLeadEntity[]> {
         try {
             const leads = await this.prisma.contactLead.findMany({
-                where: { property: { ownerId } }
+                where: { property: { ownerId } },
+                include: { sender: { select: { name: true } } },
+                orderBy: { createdAt: 'desc' }
             })
 
-            return leads.map(ContactLeadEntity.fromObject)
+            return leads.map((lead) => ContactLeadEntity.fromObject({ senderName: lead.sender.name, ...lead }))
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
@@ -38,10 +42,13 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
     async getLeadByPropertyAndSender(propertyId: string, senderId: string): Promise<ContactLeadEntity | null> {
         try {
             const lead = await this.prisma.contactLead.findFirst({
-                where: {propertyId, senderId}
+                where: { propertyId, senderId },
+                include: { sender: { select: { name: true } } },
             })
 
-            return lead
+            if (!lead) return null
+
+            return { ...lead, senderName: lead.sender.name }
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
@@ -50,10 +57,11 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
     async findById(leadId: string): Promise<ContactLeadEntity> {
         try {
             const lead = await this.prisma.contactLead.findUniqueOrThrow({
-                where: { id: leadId }
+                where: { id: leadId },
+                include: { sender: { select: { name: true } } },
             })
 
-            return ContactLeadEntity.fromObject(lead)
+            return { ...lead, senderName: lead.sender.name }
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
@@ -63,10 +71,11 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
         try {
             const lead = await this.prisma.contactLead.update({
                 where: { id: leadId },
+                include: { sender: { select: { name: true } } },
                 data: { isRead: true }
             })
 
-            return ContactLeadEntity.fromObject(lead)
+            return { ...lead, senderName: lead.sender.name }
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }
