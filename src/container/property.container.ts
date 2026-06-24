@@ -3,7 +3,7 @@ import { DeletePropertyUseCase } from "../application/use-cases/property/delete-
 import { GetOwnerPropertiesUseCase } from "../application/use-cases/property/get-owner-properties.use-case";
 import { GetPropertyUseCase } from "../application/use-cases/property/get-property.use-case";
 import { ToggleStatusUseCase } from "../application/use-cases/property/toggle-status.use-case";
-import { UpdatePropertyUseCase } from "../application/use-cases/photo/update-property.use-case";
+import { UpdatePropertyUseCase } from "../application/use-cases/property/update-property.use-case";
 import { PropertyController } from "../presentation/property/property.controller";
 import { photoRepository, propertyRepository } from "./repositories.container";
 import { cloudinaryService } from "./services.container";

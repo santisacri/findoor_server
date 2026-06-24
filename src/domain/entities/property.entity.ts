@@ -35,7 +35,7 @@ interface PropertyEntityProps {
     updatedAt: Date
     isActive: boolean
     address?: AddressEntity
-    photos: PhotoEntity[]
+    photos?: PhotoEntity[]
 }
 
 export class PropertyEntity {
@@ -78,7 +78,7 @@ export class PropertyEntity {
         this.updatedAt = props.updatedAt
         this.address = props.address
         this.isActive = props.isActive
-        this.photos = props.photos
+        this.photos = props.photos ?? []
     }
 
 

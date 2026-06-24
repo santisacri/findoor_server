@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IUploadPhotosUseCase } from "../../application/use-cases/photo/upload-photos.use-case";
-import { IDeletePhotoUseCase } from "../../application/use-cases/property/delete-photo.use-case";
+import { IDeletePhotoUseCase } from "../../application/use-cases/photo/delete-photo.use-case";
 
 
 interface UseCases {

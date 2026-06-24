@@ -1,5 +1,5 @@
 import { UploadPhotosUseCase } from "../application/use-cases/photo/upload-photos.use-case"
-import { DeletePhotoUseCase } from "../application/use-cases/property/delete-photo.use-case"
+import { DeletePhotoUseCase } from "../application/use-cases/photo/delete-photo.use-case"
 import { PhotoController } from "../presentation/property/photo.controller"
 import { photoRepository, propertyRepository } from "./repositories.container"
 import { cloudinaryService } from "./services.container"

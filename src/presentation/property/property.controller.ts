@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ICreatePropertyUseCase } from "../../application/use-cases/property/create-property.use-case";
 import { IGetPropertyUseCase } from "../../application/use-cases/property/get-property.use-case";
-import { IUpdatePropertyUseCase } from "../../application/use-cases/photo/update-property.use-case";
+import { IUpdatePropertyUseCase } from "../../application/use-cases/property/update-property.use-case";
 import { IDeletePropertyUseCase } from "../../application/use-cases/property/delete-property.use-case";
 import { IToggleStatusUseCase } from "../../application/use-cases/property/toggle-status.use-case";
 import { IGetOwnerPropertiesUseCase } from "../../application/use-cases/property/get-owner-properties.use-case";
@@ -30,7 +30,12 @@ export class PropertyController {
         return properties.map(property => {
             return {
                 ...property,
-                photos: property.photoUrls
+                photos: property.photos.map(photo => {
+                    return {
+                        url: photo.url,
+                        id: photo.id
+                    }
+                })
             }
         })
     }
