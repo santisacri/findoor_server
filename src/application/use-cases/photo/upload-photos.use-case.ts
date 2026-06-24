@@ -20,10 +20,19 @@ export class UploadPhotosUseCase implements IUploadPhotosUseCase {
         const property = await this.propertyRepository.getProperty(propertyId)
         if (property.ownerId !== userId) throw CustomError.forbidden('Unauthorized')
 
+        const hasPhotos = property.photos.length > 0
+
+        const maxOrder = hasPhotos ? Math.max(...property.photos.map(p => p.order)) : -1
+
         const uploaded = await Promise.all(
             files.map((file, index) =>
                 this.cloudinaryService.upload(file.buffer, `properties/${propertyId}`)
-                    .then(({ url, publicId }) => ({ url, publicId, propertyId, order: index }))
+                    .then(({ url, publicId }) => ({
+                        url,
+                        publicId,
+                        propertyId,
+                        order: maxOrder + 1 + index
+                    }))
             )
         )
 
