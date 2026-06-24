@@ -26,20 +26,6 @@ export class PropertyController {
         private readonly useCases: UseCases
     ) { }
 
-    propertiesWithoutPhotoEntity = (properties: PropertyEntity[]) => {
-        return properties.map(property => {
-            return {
-                ...property,
-                photos: property.photos.map(photo => {
-                    return {
-                        url: photo.url,
-                        id: photo.id
-                    }
-                })
-            }
-        })
-    }
-
 
     createProperty = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.user!
@@ -58,9 +44,7 @@ export class PropertyController {
             const filters = getPropertiesSchema.parse(req.query)
             const { properties, total } = await this.useCases.getAllPropertiesUseCase.execute(filters)
 
-            const propertiesWithoutPhotoEntity = this.propertiesWithoutPhotoEntity(properties)
-
-            res.json({ properties: propertiesWithoutPhotoEntity, total })
+            res.json({ properties: properties.map(p => p.toJson), total })
         } catch (error) {
             next(error)
         }
@@ -72,9 +56,8 @@ export class PropertyController {
         try {
             const properties = await this.useCases.getOwnerPropertiesUseCase.execute(id)
 
-            const propertiesWithoutPhotoEntity = this.propertiesWithoutPhotoEntity(properties)
-
-            res.json({ properties: propertiesWithoutPhotoEntity })
+            console.log()
+            res.json({ properties: properties.map(p => p.toJson) })
         } catch (error) {
             next(error)
         }
@@ -86,9 +69,7 @@ export class PropertyController {
         try {
             const property = await this.useCases.getPropertyUseCase.execute(propertyId)
 
-            const propertyWithoutPhotoEntity = this.propertiesWithoutPhotoEntity([property])[0]
-
-            res.json({ property: propertyWithoutPhotoEntity })
+            res.json({ property: property.toJson})
         } catch (error) {
             next(error)
         }
@@ -101,9 +82,7 @@ export class PropertyController {
         try {
             const property = await this.useCases.updatePropertyUseCase.execute(req.body, propertyId, id)
 
-            const propertyWithoutPhotoEntity = this.propertiesWithoutPhotoEntity([property])[0]
-
-            res.json({ property: propertyWithoutPhotoEntity })
+            res.json({ property: property.toJson })
         } catch (error) {
             next(error)
         }

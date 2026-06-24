@@ -34,7 +34,7 @@ interface PropertyEntityProps {
     createdAt: Date
     updatedAt: Date
     isActive: boolean
-    address?: AddressEntity
+    address: AddressEntity
     photos?: PhotoEntity[]
 }
 
@@ -57,7 +57,7 @@ export class PropertyEntity {
     public updatedAt: Date
     public isActive: boolean
     public photos: PhotoEntity[]
-    public address?: AddressEntity
+    public address: AddressEntity
 
 
     private constructor(props: PropertyEntityProps) {
@@ -82,14 +82,42 @@ export class PropertyEntity {
     }
 
 
-    static fromObject(props: PropertyEntityProps) {
-        const { id, ownerId, photos = [] } = props
+    static fromObject(props: any): PropertyEntity {
+        const {
+            id, ownerId, operationType, propertyType, title, description,
+            price, currency, totalAreaM2, bedrooms, bathrooms, parkingSpots,
+            createdAt, updatedAt, isActive, address, photos = []
+        } = props
 
         if (!id) throw CustomError.badRequest('Missing id')
         if (!ownerId) throw CustomError.badRequest('Missing ownerId')
+        if (!operationType) throw CustomError.badRequest('Missing operationType')
+        if (!propertyType) throw CustomError.badRequest('Missing propertyType')
+        if (!title) throw CustomError.badRequest('Missing title')
+        if (!description) throw CustomError.badRequest('Missing description')
+        if (!price) throw CustomError.badRequest('Missing price')
+        if (!currency) throw CustomError.badRequest('Missing currency')
+        if (!totalAreaM2) throw CustomError.badRequest('Missing totalAreaM2')
+        if (!bedrooms) throw CustomError.badRequest('Missing bedrooms')
+        if (!bathrooms) throw CustomError.badRequest('Missing bathrooms')
+        if (parkingSpots == null) throw CustomError.badRequest('Missing parkingSpots')
+        if (!createdAt) throw CustomError.badRequest('Missing createdAt')
+        if (!updatedAt) throw CustomError.badRequest('Missing updatedAt')
+        if (isActive == null) throw CustomError.badRequest('Missing isActive')
 
+        return new PropertyEntity({
+            ...props,
+            address: address instanceof AddressEntity ? address : AddressEntity.fromObject(address),
+            photos: photos.map((p: any) => p instanceof PhotoEntity ? p : PhotoEntity.fromObject(p))
+        })
+    }
 
-        return new PropertyEntity(props)
+    get toJson() {
+        const { photos, ...rest } = this as any
+        return {
+            ...rest,
+            photos: photos?.map((p: any) => ({ id: p.id, url: p.url })) ?? []
+        }
     }
 
     get photoUrls(): string[] {

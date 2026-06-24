@@ -1,5 +1,7 @@
-import { PrismaClient, Property } from "../../../generated/prisma/client";
+import { PrismaClient } from "../../../generated/prisma/client";
 import { IPropertyDatasource } from "../../domain/contracts/datasources/property.datasource.interface";
+import { AddressEntity } from "../../domain/entities/address.entity";
+import { PhotoEntity } from "../../domain/entities/photo.entity";
 import { Currency, OperationType, PropertyEntity, PropertyType } from "../../domain/entities/property.entity";
 import { CustomError } from "../../domain/errors/custom-errors";
 import { TCreateProperty, TGetProperties, TUpdateProperty } from "../../presentation/property/property.schemas";
@@ -14,13 +16,16 @@ export class PropertyDatasource implements IPropertyDatasource {
     ) { }
 
 
-    private toEntity(record: Property): PropertyEntity {
-        const { currency, operationType, propertyType, ...rest } = record
+    private toEntity = (record: any): PropertyEntity => {
+        const { currency, operationType, propertyType, address, photos, ...rest } = record
+
         return PropertyEntity.fromObject({
             ...rest,
             currency: currency as unknown as Currency,
             operationType: operationType as unknown as OperationType,
             propertyType: propertyType as unknown as PropertyType,
+            address: address ? AddressEntity.fromObject(address) : null,
+            photos: photos?.map((p: any) => PhotoEntity.fromObject(p)) ?? [],
         })
     }
 
@@ -34,7 +39,14 @@ export class PropertyDatasource implements IPropertyDatasource {
                     ...propertyData,
                     address: { create: address },
                 },
-                include: { address: true }
+                include: {
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    }
+                }
             })
 
             return this.toEntity(record)
@@ -52,7 +64,16 @@ export class PropertyDatasource implements IPropertyDatasource {
                 where,
                 skip: (filters.page - 1) * 25,
                 take: 25,
-                include: { address: true, photos: { take: 1, orderBy: { order: 'asc' } } }
+                include: {
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    },
+                    photos: { orderBy: { order: 'asc' }, take: 1 },
+                },
+                orderBy: { createdAt: 'desc' }
             }),
             this.prisma.property.count({ where })
         ])
@@ -68,7 +89,12 @@ export class PropertyDatasource implements IPropertyDatasource {
             const properties = await this.prisma.property.findMany({
                 where: { ownerId: userId },
                 include: {
-                    address: true,
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    },
                     photos: { orderBy: { order: 'asc' }, take: 1 },
                 }
             })
@@ -84,8 +110,13 @@ export class PropertyDatasource implements IPropertyDatasource {
             const property = await this.prisma.property.findUniqueOrThrow({
                 where: { id: propertyId },
                 include: {
-                    address: true,
-                    photos: { orderBy: { order: 'asc' } }
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    },
+                    photos: { orderBy: { order: 'asc' } },
                 }
             })
 
@@ -108,7 +139,14 @@ export class PropertyDatasource implements IPropertyDatasource {
         try {
             const property = await this.prisma.property.update({
                 where: { id: propertyId },
-                include: { address: true },
+                include: {
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    }
+                },
                 data: {
                     ...propertyData,
                     address: {
@@ -127,7 +165,14 @@ export class PropertyDatasource implements IPropertyDatasource {
         try {
             const property = await this.prisma.property.update({
                 where: { id: propertyId },
-                include: { address: true },
+                include: {
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    }
+                },
                 data: {
                     isActive: status
                 }
@@ -143,7 +188,14 @@ export class PropertyDatasource implements IPropertyDatasource {
         try {
             const property = await this.prisma.property.delete({
                 where: { id: propertyId },
-                include: { address: true }
+                include: {
+                    address: {
+                        include: {
+                            city: { select: { id: true, name: true } },
+                            province: { select: { id: true, name: true } }
+                        }
+                    }
+                }
             })
 
             return this.toEntity(property)
