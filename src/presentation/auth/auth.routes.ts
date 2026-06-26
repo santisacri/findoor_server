@@ -20,7 +20,7 @@ export class AuthRoutes {
         router.post('/forgot-password', [authRateLimit, validateBody(forgotPasswordSchema)], authController.forgotPassword)
         router.post('/reset-password', [authRateLimit, validateBody(resetPasswordSchema)], authController.resetPassword)
         router.get('/verify', [authRateLimit], authController.verifyAccount)
-        router.post('/delete-account', [authRateLimit, authMiddleware, validateBody(deleteAccountSchema)], authController.deleteAccount)
+        router.delete('/delete-account', [authRateLimit, authMiddleware, validateBody(deleteAccountSchema)], authController.deleteAccount)
 
         return router
     }
