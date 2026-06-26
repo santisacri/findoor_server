@@ -120,7 +120,4 @@ export class PropertyEntity {
         }
     }
 
-    get photoUrls(): string[] {
-        return this.photos?.map(p => p.url) ?? []
-    }
 }

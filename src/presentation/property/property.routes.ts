@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import validateBody from "../middlewares/validate-body.middleware";
-import { createPropertySchema, getAllPropertiesSchema, sendMessageSchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
+import { createPropertySchema, sendMessageSchema, toggleStatusSchema, updatePropertySchema } from "./property.schemas";
 import { uploadMiddleware } from "../middlewares/upload.middleware";
 import { propertyController } from "../../container/property.container";
 import { favoriteController } from "../../container/favorite.container";
@@ -20,7 +20,7 @@ export class PropertyRoutes {
         router.get('/', [], propertyController.getAllProperties)
         router.get('/me', [authMiddleware], propertyController.getOwnerProperties)
         router.get('/favorites', [authMiddleware], favoriteController.getFavorites)
-        router.get('/leads', [authMiddleware, ownerMiddleware], leadController.getLeads)
+        router.get('/leads', [authMiddleware], leadController.getLeads)
         router.patch('/leads/:leadId/read', [authMiddleware, ownerMiddleware], leadController.markAsRead)
 
         // routes with parameters
