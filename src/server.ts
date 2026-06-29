@@ -20,7 +20,13 @@ export class Server {
     start() {
         this.app.use(globalRateLimit)
         this.app.use(corsConfig)
-        this.app.use(helmet())
+        this.app.use(helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
+                }
+            }
+        }))
 
         this.app.use(express.json())
         this.app.use(cookieParser())

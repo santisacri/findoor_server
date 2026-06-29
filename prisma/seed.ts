@@ -4,6 +4,7 @@ import citiesData from './data/cities.json'
 import propertiesData from './data/properties.json'
 import bcrypt from 'bcryptjs'
 import { Currency, OperationType, PropertyEntity, PropertyType } from '../src/domain/entities/property.entity'
+import { envs } from '../src/env.schema'
 
 
 async function main() {
@@ -34,7 +35,7 @@ async function main() {
 
     console.log('Seeding user...')
 
-    const password = 'Pass12345'
+    const password = envs.PASSWORD_USER_SEED
     const passwordHash = await bcrypt.hash(password, 10)
 
     const user = await prisma.user.upsert({
