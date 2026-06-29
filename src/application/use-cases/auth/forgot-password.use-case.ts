@@ -1,3 +1,4 @@
+import { IRefreshTokenRepository } from "../../../domain/contracts/repositories/refresh-token.repository.interface";
 import { IUserRepository } from "../../../domain/contracts/repositories/user.repository.interface";
 import { IEmailService } from "../../../domain/contracts/services/email.service.interface";
 import { TokenService } from "../../../infraestructure/services/token.service";
@@ -10,6 +11,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
 
     constructor(
         private readonly userRepo: IUserRepository,
+        private readonly refreshTokenRepo: IRefreshTokenRepository,
         private readonly emailService: IEmailService
     ) { }
 
@@ -21,6 +23,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
 
         await this.userRepo.assignResetToken(user.id, token)
         await this.emailService.sendPasswordResetEmail(user.email, token, user.name)
+        await this.refreshTokenRepo.globalLogout(user.id)
     }
 
 }

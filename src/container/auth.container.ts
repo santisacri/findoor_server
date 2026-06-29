@@ -20,7 +20,7 @@ const rotateRefreshTokenUseCase = new RotateRefreshTokenUseCase(refreshTokenRepo
 const logoutUseCase = new LogoutUseCase(refreshTokenRepository)
 const changePasswordUseCase = new ChangePasswordUseCase(userRepository, hashService)
 const verifyAccountUseCase = new VerifyAccountUseCase(userRepository)
-const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, emailService)
+const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, refreshTokenRepository ,emailService)
 const resetPasswordUseCase = new ResetPasswordUseCase(userRepository, refreshTokenRepository, hashService)
 const deleteAccountUseCase = new DeleteAccountUseCase(userRepository, hashService)
 
