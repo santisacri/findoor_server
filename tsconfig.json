@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "bundler",
     "target": "ES2023",
     "strict": true,
@@ -10,7 +10,10 @@
       "jest"
     ],
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": true,
+    "resolveJsonModule": true,
+    "allowJs": true
   },
   "include": [
     "src/**/*"
