@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "../../../generated/prisma/client"
 import { IPhotoDatasurce } from "../../domain/contracts/datasources/photo.datasource.interface";
 import { PhotoEntity } from "../../domain/entities/photo.entity";
 import { CustomError } from "../../domain/errors/custom-errors";

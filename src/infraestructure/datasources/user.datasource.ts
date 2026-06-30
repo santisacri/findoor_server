@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "../../../generated/prisma/client"
 import { IUserDatasource } from "../../domain/contracts/datasources/user.datasource.interface";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { TRegisterUser } from "../../presentation/auth/auth.schemas";

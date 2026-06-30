@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "../../../generated/prisma/client"
 import { IContactLeadDatasource } from "../../domain/contracts/datasources/contact-lead.datasource.interface";
 import { ContactLeadEntity } from "../../domain/entities/contact-lead.entity";
 import { CustomError } from "../../domain/errors/custom-errors";

@@ -9,7 +9,7 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "start": "npx prisma migrate deploy && node dist/app.js"
+    "start": "npx prisma migrate deploy && node dist/src/app.js"
   },
   "type": "commonjs",
   "keywords": [],
