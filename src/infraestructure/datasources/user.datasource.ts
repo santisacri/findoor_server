@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "../../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client/extension";
 import { IUserDatasource } from "../../domain/contracts/datasources/user.datasource.interface";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { TRegisterUser } from "../../presentation/auth/auth.schemas";
@@ -13,7 +13,7 @@ export class UserDatasource implements IUserDatasource {
     ) { }
 
 
-    toEntity(prismaUser: User): UserEntity {
+    toEntity(prismaUser: any): UserEntity {
         const { verificationExpiresAt, verificationToken, resetToken, resetTokenExpiresAt, ...user } = prismaUser
         return UserEntity.fromObject({
             ...user,

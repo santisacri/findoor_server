@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client/extension";
 import { IRefreshTokenDatasource } from "../../domain/contracts/datasources/refresh-token.datasource.interface";
 import { RefreshTokenEntity } from "../../domain/entities/refresh-token.entity";
 import { CustomError } from "../../domain/errors/custom-errors";

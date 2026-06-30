@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client/extension";
 import { IFavoriteDatasource } from "../../domain/contracts/datasources/favorite.datasource.interface";
 import { FavoriteEntity } from "../../domain/entities/favorite.entity";
 import { CustomError } from "../../domain/errors/custom-errors";

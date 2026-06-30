@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client/extension";
 import { IContactLeadDatasource } from "../../domain/contracts/datasources/contact-lead.datasource.interface";
 import { ContactLeadEntity } from "../../domain/entities/contact-lead.entity";
 import { CustomError } from "../../domain/errors/custom-errors";
@@ -33,7 +33,9 @@ export class ContactLeadDatasource implements IContactLeadDatasource {
                 orderBy: { createdAt: 'desc' }
             })
 
-            return leads.map((lead) => ContactLeadEntity.fromObject({ senderName: lead.sender.name, ...lead }))
+            type LeadWithSender = typeof leads[0]
+
+            return leads.map((lead: LeadWithSender) => ContactLeadEntity.fromObject({ senderName: lead.sender.name, ...lead }))
         } catch (error) {
             throw CustomError.fromPrisma(error)
         }

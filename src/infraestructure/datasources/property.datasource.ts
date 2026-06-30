@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../generated/prisma/client";
+import { PrismaClient } from "@prisma/client/extension";
 import { IPropertyDatasource } from "../../domain/contracts/datasources/property.datasource.interface";
 import { AddressEntity } from "../../domain/entities/address.entity";
 import { PhotoEntity } from "../../domain/entities/photo.entity";

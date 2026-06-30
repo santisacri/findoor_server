@@ -1,5 +1,5 @@
-import { Prisma } from "../../../generated/prisma/client"
 import { envs } from "../../env.schema"
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/client"
 
 
 
@@ -32,7 +32,7 @@ export class CustomError extends Error {
     }
 
     static fromPrisma(error: unknown): never {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error instanceof PrismaClientKnownRequestError) {
             !envs.IN_PRODUCTION && console.log(error.message)
             switch (error.code) {
                 case 'P2002':
@@ -45,7 +45,7 @@ export class CustomError extends Error {
             }
         }
 
-        if (error instanceof Prisma.PrismaClientValidationError) {
+        if (error instanceof PrismaClientValidationError) {
             !envs.IN_PRODUCTION && console.log(error.message)
             throw CustomError.badRequest('Invalid data sent to database');
         }

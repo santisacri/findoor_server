@@ -29,7 +29,8 @@ const mockLead = ContactLeadEntity.fromObject({
     senderId: 'seeker-uuid',
     message: 'Me interesa la propiedad',
     isRead: false,
-    createdAt: new Date()
+    createdAt: new Date(),
+    senderName: 'john'
 })
 
 describe('CreateLeadUseCase', () => {

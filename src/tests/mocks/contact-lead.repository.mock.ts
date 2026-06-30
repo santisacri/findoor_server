@@ -5,5 +5,6 @@ export const mockContactLeadRepository = (): jest.Mocked<IContactLeadRepository>
     getOwnerLeads: jest.fn(),
     markAsRead: jest.fn(),
     createLead: jest.fn(),
-    findById: jest.fn()
+    findById: jest.fn(),
+    getLeadByPropertyAndSender: jest.fn()
 })
