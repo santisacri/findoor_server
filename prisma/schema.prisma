@@ -71,6 +71,8 @@ model Property {
   photos        Photo[]
 
   @@map("properties")
+  @@index([isActive, operationType, propertyType])
+  @@index([ownerId])
 }
 
 model Address {
@@ -88,6 +90,7 @@ model Address {
   property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@map("addresses")
+  @@index([cityId])
 }
 
 model Favorite {
@@ -100,6 +103,7 @@ model Favorite {
 
   @@unique([userId, propertyId])
   @@map("favorites")
+  @@index([userId])
 }
 
 model ContactLead {
@@ -114,6 +118,7 @@ model ContactLead {
 
   @@unique([propertyId, senderId])
   @@map("contact_leads")
+  @@index([propertyId])
 }
 
 model Photo {
