@@ -46,7 +46,7 @@ export class AuthController {
             res.cookie('refreshToken', RT.token, {
                 httpOnly: true,
                 secure: envs.IN_PRODUCTION,
-                sameSite: 'strict',
+                sameSite: envs.IN_PRODUCTION ? 'none' : 'strict',
                 path: 'api/auth/refresh',
                 expires: RT.expiresAt
             })
@@ -68,7 +68,7 @@ export class AuthController {
             res.cookie('refreshToken', RT.token, {
                 httpOnly: true,
                 secure: envs.IN_PRODUCTION,
-                sameSite: 'strict',
+                sameSite: envs.IN_PRODUCTION ? 'none' : 'strict',
                 path: 'api/auth/refresh',
                 expires: RT.expiresAt
             })
@@ -90,7 +90,7 @@ export class AuthController {
             res.clearCookie('refreshToken', {
                 httpOnly: true,
                 secure: envs.IN_PRODUCTION,
-                sameSite: 'strict',
+                sameSite: envs.IN_PRODUCTION ? 'none' : 'strict',
                 path: '/auth/refresh',
             })
 
