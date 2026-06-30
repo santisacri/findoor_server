@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
+    "postinstall": "npx prisma generate",
     "dev": "tsx watch src/app.ts",
     "migrate": "prisma migrate deploy && prisma generate",
     "build": "tsc",
