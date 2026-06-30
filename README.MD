@@ -1,53 +1,52 @@
 # Findoor
 
-Portal inmobiliario simplificado para publicar y buscar propiedades en venta y alquiler.
+Simplified real estate portal to publish and search properties for sale or rent.
 
 ## Stack
 - **Backend:** Node.js, TypeScript, Express, Prisma, PostgreSQL
 - **Frontend:** React, TypeScript, Tailwind CSS
-- **Auth:** JWT con access + refresh tokens, rotación de refresh tokens, httpOnly cookies, logout local y global
-- **Storage:** Cloudinary (fotos)
+- **Auth:** JWT with access + refresh tokens, refresh token rotation, httpOnly cookies, local and global logout
+- **Storage:** Cloudinary (photos)
 - **Email:** Resend
-- **Seguridad:** Helmet, CORS, Rate limiting (global y en auth)
+- **Security:** Helmet, CORS, rate limiting (global and auth)
 - **Deploy:** Railway (backend + DB) / Vercel (frontend)
 
-## Arquitectura
-Backend estructurado con Clean Architecture (Domain → Use Cases → Infrastructure → Presentation).
-Separación estricta entre datasources, repositories y use cases con inyección de dependencias.
+## Architecture
+Backend structured with Clean Architecture (Domain → Use Cases → Infrastructure → Presentation).
+Strict separation between datasources, repositories, and use cases with dependency injection.
 
-## Setup local
-1. Clonar el repo
-2. Copiar `.env.template` a `.env` y completar las variables
-3. `docker-compose up -d` (levanta PostgreSQL)
+## Local setup
+1. Clone the repo
+2. Copy `.env.template` to `.env` and fill in the variables
+3. `docker-compose up -d` (starts PostgreSQL)
 4. `npm run migrate`
 5. `npm run dev`
 
-## Funcionalidades
+## Features
 
 ### Auth
-- Registro e inicio de sesión con JWT
-- Cambio de contraseña autenticado
-- Logout local (invalida el token actual) y global (invalida todos los tokens del usuario)
+- Registration and login with JWT
+- Authenticated password change
+- Local logout (invalidates the current token) and global logout (invalidates all of the user's tokens)
 
-### Propiedades
-- Feed público con paginación y filtros (precio, ciudad, tipo, operación, ambientes, superficie, cocheras)
-- Publicar propiedad con fotos, descripción, precio y ubicación
-- Tipos: Casa, Departamento
-- Operaciones: Venta, Alquiler
-- Ver detalle de propiedad
+### Properties
+- Public feed with pagination and filters (price, city, type, operation, rooms, surface, parking)
+- Publish a property with photos, description, price, and location
+- Types: House, Apartment
+- Operations: Sale, Rent
+- View property detail
 
 ### Seekers
-- Guardar y quitar propiedades de favoritos (toggle)
-- Contactar al Owner mediante un mensaje
+- Save and remove properties from favorites (toggle)
+- Contact the owner via a message
 
-### Panel del Owner
-- Un usuario se convierte en Owner al publicar su primera propiedad
-- Ver y administrar sus propiedades (activar/desactivar/editar/eliminar)
-- Subir y eliminar fotos de sus propiedades
-- Ver ContactLeads recibidos (leídos / no leídos)
+### Owner dashboard
+- View and manage their properties (activate/deactivate/edit/delete)
+- Upload and delete property photos
+- View received contact leads (read / unread)
 
-## Fuera de scope (v2)
-- Mapa interactivo con búsqueda por radio geográfico
-- Chat en tiempo real entre Seeker y Owner
-- Sistema de reviews
-- Planes pagos / destacados
+## Out of scope (v2)
+- Interactive map with radius-based search
+- Real-time chat between Seeker and Owner
+- Reviews system
+- Paid / featured listings
