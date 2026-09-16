@@ -18,11 +18,11 @@ export class ChangePasswordUseCase implements IChangePasswordUseCase {
     async execute(data: TChangePassword, user: UserEntity): Promise<Omit<IUserEntityProps, "password">> {
         if (data.newPassword !== data.repeatedPassword) throw CustomError.badRequest('New password and repeated password arent the same')
 
-        const isValid = this.hashService.compare(user.password, data.currentPassword)
+        const isValid = await this.hashService.compare(user.password, data.currentPassword)
 
         if (!isValid) throw CustomError.forbidden('Invalid password')
 
-        const updatedUserEntity = UserEntity.fromObject({ ...user, password: this.hashService.hash(data.newPassword) })
+        const updatedUserEntity = UserEntity.fromObject({ ...user, password: await this.hashService.hash(data.newPassword) })
 
         const updatedUser = await this.userRepo.save(updatedUserEntity)
 

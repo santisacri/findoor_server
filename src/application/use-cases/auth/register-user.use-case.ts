@@ -18,7 +18,7 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
     ) { }
 
     async execute(user: TRegisterUser): Promise<{ message: string }> {
-        const hash = this.hashService.hash(user.password)
+        const hash = await this.hashService.hash(user.password)
         const token = TokenService.generate()
 
         const newUser = await this.userRepository.createUser({ ...user, password: hash, }, token)

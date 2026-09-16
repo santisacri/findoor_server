@@ -1,5 +1,5 @@
 
 export interface IHashService {
-    hash(password: string): string
-    compare(hash: string, password: string): boolean
+    hash(password: string): Promise<string>
+    compare(hash: string, password: string): Promise<boolean>
 }

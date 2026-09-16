@@ -16,7 +16,8 @@ export class ResetPasswordUseCase implements IResetPasswordUseCase {
 
     async execute(newPassword: string, token: string): Promise<void> {
         const user = await this.userRepo.findByResetToken(token)
-        const passwordHash = this.hashService.hash(newPassword)
+        const passwordHash = await this.hashService.hash(newPassword)
+        
         await this.userRepo.resetPassword(passwordHash, user.id)
         await this.refreshTokenRepo.globalLogout(user.id)
     }

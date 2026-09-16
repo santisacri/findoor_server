@@ -30,7 +30,7 @@ export class LoginUserUseCase implements ILoginUserUseCase {
 
         if(!user.isVerified) throw CustomError.forbidden('You need to verify your account in order to login')
 
-        const isValid = this.hashService.compare(user.password, data.password)
+        const isValid = await this.hashService.compare(user.password, data.password)
         if (!isValid) throw CustomError.badRequest('Invalid password')
 
         const token = this.jwtService.sign({ sub: user.id, exp: this.jwtExpiry })

@@ -15,7 +15,7 @@ export class DeleteAccountUseCase implements IDeleteAccountUseCase {
     ) { }
 
     async execute(user: UserEntity, password: string): Promise<void> {
-        const isValid = this.hashService.compare(user.password, password)
+        const isValid = await this.hashService.compare(user.password, password)
         if (!isValid) throw CustomError.badRequest('Invalid password')
 
         await this.userRepo.deleteAccount(user.id)
